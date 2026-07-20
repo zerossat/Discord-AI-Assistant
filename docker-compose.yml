@@ -1,0 +1,84 @@
+name: discord-ai-assistant
+
+services:
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  bot:
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongo:27017/discord-ai
+      REDIS_URL: redis://redis:6379
+      API_PORT: 4000
+    ports:
+      - '4000:4000'
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'node -e "fetch(\"http://localhost:4000/api/health\").then(r=>{if(!r.ok)throw 1}).catch(()=>process.exit(1))"']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      BOT_API_URL: http://bot:4000
+    ports:
+      - '3000:3000'
+    depends_on:
+      bot:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'node -e "fetch(\"http://localhost:3000\").then(r=>{if(!r.ok)throw 1}).catch(()=>process.exit(1))"']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  mongo-data:
+  redis-data:
+

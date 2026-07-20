@@ -1,0 +1,15 @@
+**/node_modules
+**/.next
+**/dist
+**/build
+**/.turbo
+**/coverage
+**/*.tsbuildinfo
+.git
+.github
+*.log
+.env
+.env.*
+!.env.example
+README.md
+docs

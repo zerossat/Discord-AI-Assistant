@@ -1,0 +1,44 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Assistant logo">
+  <title>AI Assistant — avatar</title>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#19213A"/>
+      <stop offset="55%" stop-color="#0C1120"/>
+      <stop offset="100%" stop-color="#06080F"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8C97FF"/>
+      <stop offset="45%" stop-color="#5865F2"/>
+      <stop offset="100%" stop-color="#10B6FF"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9BE3FF"/>
+      <stop offset="100%" stop-color="#5BD2FF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5865F2" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#5865F2" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#5865F2" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <g opacity="0.55" fill="none" stroke="#3A4576" stroke-width="2">
+    <ellipse cx="256" cy="236" rx="176" ry="176"/>
+    <ellipse cx="256" cy="236" rx="176" ry="62"/>
+  </g>
+
+  <circle cx="256" cy="236" r="150" fill="url(#glow)"/>
+
+  <circle cx="256" cy="60" r="9" fill="#10B6FF"/>
+  <circle cx="92" cy="262" r="5" fill="#8C97FF"/>
+  <circle cx="420" cy="262" r="5" fill="#5BD2FF"/>
+
+  <text x="256" y="312" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="214" font-weight="800" letter-spacing="-6" fill="url(#mark)">AI</text>
+
+  <path d="M372 132 l13 33 33 13 -33 13 -13 33 -13 -33 -33 -13 33 -13 z" fill="url(#spark)"/>
+  <path d="M150 168 l7 18 18 7 -18 7 -7 18 -7 -18 -18 -7 18 -7 z" fill="#9BE3FF" opacity="0.85"/>
+
+  <text x="256" y="404" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="42" font-weight="600" letter-spacing="13" fill="#AEB8E8">ASSISTANT</text>
+</svg>

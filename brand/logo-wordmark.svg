@@ -1,0 +1,21 @@
+<svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Assistant logo lockup">
+  <title>AI Assistant — wordmark lockup</title>
+  <defs>
+    <linearGradient id="tile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C8CFF"/>
+      <stop offset="50%" stop-color="#5865F2"/>
+      <stop offset="100%" stop-color="#10B6FF"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6E7CFF"/>
+      <stop offset="100%" stop-color="#10B6FF"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="24" y="30" width="140" height="140" rx="38" fill="url(#tile)"/>
+  <path d="M94 60 l13 33 33 13 -33 13 -13 33 -13 -33 -33 -13 33 -13 z" fill="#FFFFFF"/>
+  <path d="M132 58 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5 z" fill="#EAF6FF" opacity="0.9"/>
+
+  <text x="192" y="116" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="74" font-weight="800" letter-spacing="-1" fill="url(#word)">AI Assistant</text>
+  <text x="196" y="156" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="23" font-weight="500" letter-spacing="4" fill="#8C97C8">GEMINI · DISCORD</text>
+</svg>

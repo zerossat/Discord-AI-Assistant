@@ -1,0 +1,60 @@
+<svg viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Assistant banner">
+  <title>AI Assistant — Discord banner</title>
+  <defs>
+    <radialGradient id="bbg" cx="28%" cy="42%" r="90%">
+      <stop offset="0%" stop-color="#1A2342"/>
+      <stop offset="55%" stop-color="#0C1120"/>
+      <stop offset="100%" stop-color="#06080F"/>
+    </radialGradient>
+    <linearGradient id="tile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C8CFF"/>
+      <stop offset="50%" stop-color="#5865F2"/>
+      <stop offset="100%" stop-color="#10B6FF"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#C2CCFF"/>
+    </linearGradient>
+    <radialGradient id="orbL" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5865F2" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#5865F2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbR" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10B6FF" stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#10B6FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="480" fill="url(#bbg)"/>
+  <circle cx="210" cy="230" r="300" fill="url(#orbL)"/>
+  <circle cx="1040" cy="300" r="320" fill="url(#orbR)"/>
+
+  <g opacity="0.10" stroke="#9FB0FF" stroke-width="1">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="0" y1="360" x2="1200" y2="360"/>
+    <line x1="300" y1="0" x2="300" y2="480"/>
+    <line x1="600" y1="0" x2="600" y2="480"/>
+    <line x1="900" y1="0" x2="900" y2="480"/>
+  </g>
+
+  <g opacity="0.6" fill="none" stroke="#3A4576" stroke-width="2">
+    <ellipse cx="190" cy="240" rx="150" ry="150"/>
+    <ellipse cx="190" cy="240" rx="150" ry="52"/>
+  </g>
+  <circle cx="190" cy="90" r="7" fill="#10B6FF"/>
+
+  <rect x="118" y="168" width="144" height="144" rx="40" fill="url(#tile)"/>
+  <path d="M190 198 l13 33 33 13 -33 13 -13 33 -13 -33 -33 -13 33 -13 z" fill="#FFFFFF"/>
+  <path d="M232 196 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5 z" fill="#EAF6FF" opacity="0.9"/>
+
+  <text x="318" y="262" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="98" font-weight="800" letter-spacing="-2" fill="url(#word)">AI Assistant</text>
+  <text x="322" y="322" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="30" font-weight="500" letter-spacing="2" fill="#9AA6D8">Trợ lý AI thông minh cho Discord · Gemini</text>
+
+  <g fill="#5BD2FF">
+    <circle cx="980" cy="120" r="3"/>
+    <circle cx="1060" cy="180" r="2.5"/>
+    <circle cx="1120" cy="110" r="2"/>
+    <circle cx="900" cy="380" r="2.5"/>
+  </g>
+</svg>

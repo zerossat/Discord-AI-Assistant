@@ -1,0 +1,39 @@
+{
+  "name": "discord-ai-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modern Discord AI Assistant — TypeScript monorepo (Discord.js v14 bot + Next.js dashboard + Gemini API).",
+  "packageManager": "pnpm@9.12.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,cjs,mjs,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,cjs,mjs,json,md,yml,yaml}\"",
+    "bot:dev": "pnpm --filter @daa/bot dev",
+    "bot:deploy-commands": "pnpm --filter @daa/bot deploy:commands",
+    "dashboard:dev": "pnpm --filter @daa/dashboard dev",
+    "seed": "pnpm --filter @daa/bot seed",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.3",
+    "typescript": "^5.6.2"
+  }
+}
