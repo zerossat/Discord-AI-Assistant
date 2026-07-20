@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "description": "Modern Discord AI Assistant — TypeScript monorepo (Discord.js v14 bot + Next.js dashboard + Gemini API).",
-  "packageManager": "pnpm@9.12.0",
   "workspaces": [
     "apps/*",
     "packages/*"
