@@ -11,7 +11,7 @@ dotenv.config({ path: path.join(dirname, '../../.env') });
 const nextConfig = {
   reactStrictMode: true,
   // Self-contained server output for Docker.
-  output: 'standalone',
+  output: process.env.NEXT_STANDALONE ? 'standalone' : undefined,
   // The dashboard imports the TypeScript source of @daa/shared directly.
   transpilePackages: ['@daa/shared'],
   // Correct dependency tracing in a pnpm monorepo.

@@ -1,9 +1,12 @@
+import dns from 'node:dns';
+dns.setServers(['1.1.1.1', '8.8.8.8']);
+
 import { env } from './config/env';
 import { logger } from './utils/logger';
 import { connectMongo, disconnectMongo } from './database/connection';
 import { createServiceContainer } from './services';
 import { createDiscordClient } from './discord/client';
-import { registerInteractionCreate, registerReady, registerVoiceStateUpdate } from './events';
+import { registerInteractionCreate, registerReady, registerVoiceStateUpdate, registerMessageCreate } from './events';
 import { createApp } from './server/app';
 
 async function bootstrap(): Promise<void> {
@@ -30,6 +33,7 @@ async function bootstrap(): Promise<void> {
   registerReady(client);
   registerInteractionCreate(client, services);
   registerVoiceStateUpdate(client);
+  registerMessageCreate(client, services);
 
   // 3. HTTP API (dashboard + Swagger)
   const app = createApp(client, services);

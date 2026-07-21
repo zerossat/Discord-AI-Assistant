@@ -27,6 +27,7 @@
     "clean": "turbo run clean"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
@@ -34,5 +35,15 @@
     "prettier": "^3.3.3",
     "turbo": "^2.1.3",
     "typescript": "^5.6.2"
-  }
+  },
+  "packageManager": "pnpm@11.15.1",
+  "onlyBuiltDependencies": [
+    "@google/genai",
+    "@scarf/scarf",
+    "esbuild",
+    "ffmpeg-static",
+    "protobufjs",
+    "sharp",
+    "unrs-resolver"
+  ]
 }

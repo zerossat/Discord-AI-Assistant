@@ -121,6 +121,23 @@ export class ChatService {
     return result.text;
   }
 
+  /** `/ship` — luận giải tương thích đôi lứa vui vẻ. */
+  async ship(
+    ctx: ChatContext,
+    userA: string,
+    userB: string,
+    percent: number,
+  ): Promise<string> {
+    const prompt = `Luận giải ghép đôi tình cảm giữa ${userA} và ${userB} với số điểm hợp nhau là ${percent}%.`;
+    const result = await this.gemini.generate(prompt, {
+      model: ctx.model,
+      system: SYSTEM_PROMPTS.ship,
+      temperature: 0.85,
+    });
+    await this.users.incrementTokens(ctx.userId, result.usage.totalTokens);
+    return result.text;
+  }
+
   /** `/summary` — summarise recent channel messages. */
   async summarize(
     ctx: ChatContext,

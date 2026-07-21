@@ -1,0 +1,20 @@
+# fly.toml cho Next.js Dashboard Frontend
+
+app = "discord-ai-assistant-dashboard"
+primary_region = "hkg"
+
+[build]
+  dockerfile = "apps/dashboard/Dockerfile"
+  ignorefile = ".dockerignore"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

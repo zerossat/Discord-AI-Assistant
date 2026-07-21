@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for discord-ai-assistant-dusky-inlet-2831 on 2026-07-21T09:18:39+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'discord-ai-assistant-dusky-inlet-2831'
+primary_region = 'sin'
+
+[build]
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1

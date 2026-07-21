@@ -4,7 +4,7 @@ import { defineConfig } from 'tsup';
 // `tsx`, so a build step is not strictly required — but `pnpm build` produces
 // a self-contained ESM bundle in `dist/` for environments that prefer it.
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/deploy-commands.ts'],
   format: ['esm'],
   target: 'node20',
   platform: 'node',

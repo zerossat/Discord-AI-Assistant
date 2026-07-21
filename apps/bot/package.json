@@ -28,7 +28,7 @@
     "ffmpeg-static": "^5.2.0",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
-    "libsodium-wrappers": "^0.7.15",
+    "libsodium-wrappers": "0.7.15",
     "mongoose": "^8.7.1",
     "opusscript": "^0.0.8",
     "pino": "^9.4.0",
