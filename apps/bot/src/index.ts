@@ -49,10 +49,10 @@ async function bootstrap(): Promise<void> {
     logger.warn({ err }, 'Voice prerequisites not fully initialised — /tts may be unavailable');
   }
 
-  // 6. HTTP API (dashboard + Swagger)
+  // 6. HTTP API (dashboard + Swagger + Railway Health Check)
   const app = createApp(client, services);
-  const server = app.listen(env.API_PORT, () => {
-    logger.info(`🌐 API listening on http://localhost:${env.API_PORT} (docs at /api/docs)`);
+  const server = app.listen(env.API_PORT, '0.0.0.0', () => {
+    logger.info(`🌐 API listening on http://0.0.0.0:${env.API_PORT} (docs at /api/docs)`);
   });
 
   // Graceful shutdown

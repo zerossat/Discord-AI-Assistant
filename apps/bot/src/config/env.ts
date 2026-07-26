@@ -36,7 +36,13 @@ const envSchema = z.object({
   REDIS_URL: z.string().default(process.env.REDIS_URL || 'redis://localhost:6379'),
 
   // HTTP API
-  API_PORT: portString.default(process.env.API_PORT ? Number(process.env.API_PORT) : 4000),
+  API_PORT: portString.default(
+    process.env.PORT
+      ? Number(process.env.PORT)
+      : process.env.API_PORT
+      ? Number(process.env.API_PORT)
+      : 4000,
+  ),
   JWT_SECRET: z.string().default(process.env.JWT_SECRET || 'discord_ai_assistant_fallback_secret_32bytes'),
 
   // Memory

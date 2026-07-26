@@ -18,7 +18,7 @@ import { statusRouter } from './routes/status.route';
 
 const log = childLogger('api');
 
-/** Build the Express app that serves the dashboard API + Swagger docs. */
+/** Build the Express app that serves the dashboard API + Swagger docs + Railway Health Check. */
 export function createApp(client: Client, services: ServiceContainer): Express {
   const app = express();
   app.disable('x-powered-by');
@@ -27,6 +27,14 @@ export function createApp(client: Client, services: ServiceContainer): Express {
   app.use((req, _res, next) => {
     log.debug({ method: req.method, url: req.url }, 'request');
     next();
+  });
+
+  // Root health check endpoint for Railway / Cloud deployment monitoring
+  app.get('/', (_req, res) => {
+    res.json({ status: 'ok', service: 'Discord AI Assistant Bot', time: new Date().toISOString() });
+  });
+  app.get('/health', (_req, res) => {
+    res.json({ status: 'ok' });
   });
 
   app.use('/api', healthRouter(client, services));
