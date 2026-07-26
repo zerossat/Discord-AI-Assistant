@@ -1,6 +1,5 @@
-import { getServerSession } from 'next-auth';
 import type { GuildSummary } from '@daa/shared';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { canManage } from '@/lib/admin';
 import { getGuilds } from '@/lib/api';
 import { ServerEditor } from '@/components/server-editor';
@@ -9,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 export const dynamic = 'force-dynamic';
 
 export default async function ServersPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
   const editable = canManage(session?.user?.discordId);
 
   let guilds: GuildSummary[] = [];

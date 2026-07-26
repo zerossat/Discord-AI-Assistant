@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { getServerSession } from 'next-auth';
 import type { ConversationSummary } from '@daa/shared';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { canManage } from '@/lib/admin';
 import { getConversations } from '@/lib/api';
 import { DeleteConversationButton } from '@/components/delete-conversation-button';
@@ -13,7 +12,7 @@ export const dynamic = 'force-dynamic';
 const guildKey = (guildId: string | null): string => guildId ?? 'dm';
 
 export default async function ConversationsPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
   const editable = canManage(session?.user?.discordId);
 
   let conversations: ConversationSummary[] = [];

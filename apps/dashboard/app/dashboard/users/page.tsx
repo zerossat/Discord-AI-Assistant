@@ -1,6 +1,5 @@
-import { getServerSession } from 'next-auth';
 import type { UserSummary } from '@daa/shared';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { canManage } from '@/lib/admin';
 import { getUsers } from '@/lib/api';
 import { ResetMemoryButton } from '@/components/reset-memory-button';
@@ -11,7 +10,7 @@ import { Users, Coins, Globe, Brain } from 'lucide-react';
 export const dynamic = 'force-dynamic';
 
 export default async function UsersPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
   const editable = canManage(session?.user?.discordId);
 
   let users: UserSummary[] = [];

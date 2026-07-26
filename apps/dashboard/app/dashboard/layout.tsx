@@ -1,19 +1,13 @@
 import type { ReactNode } from 'react';
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Bot, ExternalLink, User } from 'lucide-react';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { SignOutButton } from '@/components/sign-out-button';
 import { Nav } from '@/components/nav';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  let session = null;
-  try {
-    session = await getServerSession(authOptions);
-  } catch {
-    session = null;
-  }
+  const session = await getAuthSession();
   if (!session) redirect('/login');
 
   const appName = process.env.NEXT_PUBLIC_APP_NAME ?? 'Discord AI Assistant';

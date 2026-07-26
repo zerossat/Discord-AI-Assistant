@@ -1,4 +1,4 @@
-import type { NextAuthOptions, Profile } from 'next-auth';
+import { getServerSession, type NextAuthOptions, type Profile } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 
 interface DiscordProfile extends Profile {
@@ -9,8 +9,8 @@ interface DiscordProfile extends Profile {
 export const authOptions: NextAuthOptions = {
   providers: [
     DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID ?? '',
-      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+      clientId: process.env.DISCORD_CLIENT_ID || 'dummy_client_id',
+      clientSecret: process.env.DISCORD_CLIENT_SECRET || 'dummy_client_secret',
       authorization: { params: { scope: 'identify email guilds' } },
     }),
   ],
@@ -37,3 +37,11 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
 };
+
+export async function getAuthSession() {
+  try {
+    return await getServerSession(authOptions);
+  } catch {
+    return null;
+  }
+}

@@ -15,16 +15,11 @@ import {
   Users,
   Terminal,
 } from 'lucide-react';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { SignInButton } from '@/components/sign-in-button';
 
 export default async function Home() {
-  let session = null;
-  try {
-    session = await getServerSession(authOptions);
-  } catch {
-    session = null;
-  }
+  const session = await getAuthSession();
   if (session) redirect('/dashboard');
 
   const features = [

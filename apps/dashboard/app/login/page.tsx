@@ -1,12 +1,11 @@
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { Bot } from 'lucide-react';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { SignInButton } from '@/components/sign-in-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function LoginPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
   if (session) redirect('/dashboard');
 
   return (

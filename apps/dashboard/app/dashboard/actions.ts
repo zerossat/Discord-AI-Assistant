@@ -1,14 +1,13 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getServerSession } from 'next-auth';
 import type { UpdateGuildSettingsInput } from '@daa/shared';
-import { authOptions } from '@/lib/auth';
+import { getAuthSession } from '@/lib/auth';
 import { canManage } from '@/lib/admin';
 import { deleteConversation, patchGuild, resetUserMemory } from '@/lib/api';
 
 async function ensureManager(): Promise<void> {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
   if (!session) throw new Error('Bạn cần đăng nhập.');
   if (!canManage(session.user?.discordId)) {
     throw new Error('Bạn không có quyền quản lý (chỉ admin).');
