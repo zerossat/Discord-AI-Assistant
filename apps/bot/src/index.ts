@@ -12,16 +12,33 @@ import { createApp } from './server/app';
 async function bootstrap(): Promise<void> {
   logger.info('🚀 Starting Discord AI Assistant…');
 
-  // 1. Data stores
-  try {
-    await connectMongo(env.MONGODB_URI);
-  } catch (err) {
-    logger.warn({ err }, 'MongoDB connection failed — operating in memory/fallback mode');
-  }
+  // 1. Instantiate core service container
   const services = createServiceContainer();
 
-  // 1b. Voice prerequisites for `/tts`: point the transcoder at the bundled
-  // ffmpeg and pre-initialise the encryption backend (best-effort).
+  // 2. Initialize Discord client & register event handlers
+  const client = createDiscordClient();
+  registerReady(client);
+  registerInteractionCreate(client, services);
+  registerVoiceStateUpdate(client);
+  registerMessageCreate(client, services);
+
+  // 3. Connect to Discord Gateway IMMEDIATELY (<500ms) so slash commands work instantly
+  try {
+    if (!env.DISCORD_TOKEN) {
+      logger.error('❌ DISCORD_TOKEN is missing! Please set DISCORD_TOKEN in Railway Variables.');
+    } else {
+      await client.login(env.DISCORD_TOKEN);
+    }
+  } catch (err) {
+    logger.error({ err }, '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.');
+  }
+
+  // 4. Connect to MongoDB in background without blocking Discord readiness
+  connectMongo(env.MONGODB_URI).catch((err) => {
+    logger.warn({ err }, 'MongoDB connection failed — operating in memory/fallback mode');
+  });
+
+  // 5. Voice prerequisites for `/tts` (best-effort background load)
   try {
     const ffmpegPath = (await import('ffmpeg-static')).default;
     if (ffmpegPath) process.env.FFMPEG_PATH = ffmpegPath;
@@ -32,29 +49,11 @@ async function bootstrap(): Promise<void> {
     logger.warn({ err }, 'Voice prerequisites not fully initialised — /tts may be unavailable');
   }
 
-  // 2. Discord client + handlers
-  const client = createDiscordClient();
-  registerReady(client);
-  registerInteractionCreate(client, services);
-  registerVoiceStateUpdate(client);
-  registerMessageCreate(client, services);
-
-  // 3. HTTP API (dashboard + Swagger)
+  // 6. HTTP API (dashboard + Swagger)
   const app = createApp(client, services);
   const server = app.listen(env.API_PORT, () => {
     logger.info(`🌐 API listening on http://localhost:${env.API_PORT} (docs at /api/docs)`);
   });
-
-  // 4. Connect to Discord
-  try {
-    if (!env.DISCORD_TOKEN) {
-      logger.error('❌ DISCORD_TOKEN is missing! Please set DISCORD_TOKEN in Railway Variables.');
-    } else {
-      await client.login(env.DISCORD_TOKEN);
-    }
-  } catch (err) {
-    logger.error({ err }, '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.');
-  }
 
   // Graceful shutdown
   const shutdown = async (signal: string): Promise<void> => {

@@ -18,7 +18,7 @@ export async function connectMongo(uri: string): Promise<typeof mongoose> {
   mongoose.set('strictQuery', true);
   bindEvents();
   await mongoose.connect(uri, {
-    serverSelectionTimeoutMS: 10_000,
+    serverSelectionTimeoutMS: 3000,
     autoIndex: true,
   });
   return mongoose;
