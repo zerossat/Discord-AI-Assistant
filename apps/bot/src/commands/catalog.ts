@@ -37,6 +37,7 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
     commands: [
       { usage: '/tarot [số lá] [câu hỏi]', desc: 'Bói bài Tarot — rút bài & luận giải bằng AI' },
       { usage: '/ship <người ấy> [người 2]', desc: 'Đo độ hợp % giữa hai người' },
+      { usage: '/quiz [đáp-án]', desc: 'Trò chơi Đuổi hình bắt chữ tương tác có gợi ý' },
     ],
   },
   {

@@ -1,6 +1,7 @@
 import { Events, MessageFlags, type Client, type Interaction } from 'discord.js';
 import { commandMap } from '../commands';
 import { handleMenuSelect } from '../commands/catalog';
+import { handleQuizInteraction } from '../commands/quiz.command';
 import type { ServiceContainer } from '../services';
 import { childLogger } from '../utils/logger';
 
@@ -14,6 +15,19 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
         await handleMenuSelect(interaction);
       } catch (err) {
         log.error({ err }, 'menu select failed');
+      }
+      return;
+    }
+
+    // Interactive button & modal for `/quiz` (Đuổi hình bắt chữ)
+    if (
+      (interaction.isButton() && interaction.customId.startsWith('quiz:')) ||
+      (interaction.isModalSubmit() && interaction.customId === 'quiz:modal_answer')
+    ) {
+      try {
+        await handleQuizInteraction(interaction);
+      } catch (err) {
+        log.error({ err }, 'quiz interaction failed');
       }
       return;
     }

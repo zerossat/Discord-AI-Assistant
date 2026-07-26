@@ -39,6 +39,7 @@ export const COMMAND_NAMES = {
   PAUSE: 'pause',
   RESUME: 'resume',
   QUEUE: 'queue',
+  QUIZ: 'quiz',
 } as const;
 
 export type CommandName = (typeof COMMAND_NAMES)[keyof typeof COMMAND_NAMES];

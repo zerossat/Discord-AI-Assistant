@@ -18,6 +18,7 @@ import { stopCommand } from './stop.command';
 import { pauseCommand } from './pause.command';
 import { resumeCommand } from './resume.command';
 import { queueCommand } from './queue.command';
+import { quizCommand } from './quiz.command';
 
 /** Ordered list of all slash commands the bot exposes. */
 export const commands: Command[] = [
@@ -40,6 +41,7 @@ export const commands: Command[] = [
   pauseCommand,
   resumeCommand,
   queueCommand,
+  quizCommand,
 ];
 
 /** Fast lookup by command name, used by the interaction handler. */
