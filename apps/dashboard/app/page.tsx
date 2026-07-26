@@ -19,7 +19,12 @@ import { authOptions } from '@/lib/auth';
 import { SignInButton } from '@/components/sign-in-button';
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  let session = null;
+  try {
+    session = await getServerSession(authOptions);
+  } catch {
+    session = null;
+  }
   if (session) redirect('/dashboard');
 
   const features = [

@@ -8,7 +8,12 @@ import { SignOutButton } from '@/components/sign-out-button';
 import { Nav } from '@/components/nav';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  const session = await getServerSession(authOptions);
+  let session = null;
+  try {
+    session = await getServerSession(authOptions);
+  } catch {
+    session = null;
+  }
   if (!session) redirect('/login');
 
   const appName = process.env.NEXT_PUBLIC_APP_NAME ?? 'Discord AI Assistant';
