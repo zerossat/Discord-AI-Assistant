@@ -9,6 +9,7 @@ import {
   TextInputBuilder,
   TextInputStyle,
   type ButtonInteraction,
+  type ChatInputCommandInteraction,
   type Message,
   type ModalSubmitInteraction,
 } from 'discord.js';
@@ -89,6 +90,18 @@ function buildNextButton(): ActionRowBuilder<ButtonBuilder> {
   );
 }
 
+/** Helper an toàn cho việc phản hồi Slash Command */
+async function sendSafeReply(
+  interaction: ChatInputCommandInteraction,
+  payload: any,
+): Promise<void> {
+  if (interaction.deferred || interaction.replied) {
+    await interaction.editReply(payload);
+  } else {
+    await interaction.reply(payload);
+  }
+}
+
 export const quizCommand: Command = {
   data: new SlashCommandBuilder()
     .setName(COMMAND_NAMES.QUIZ)
@@ -130,7 +143,7 @@ export const quizCommand: Command = {
       activeQuizzes.set(channelId, session);
 
       const embed = buildQuizEmbed(session, '🎮 Lượt chơi mới đã bắt đầu!');
-      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      await sendSafeReply(interaction, { embeds: [embed], components: [buildQuizButtons()] });
       return;
     }
 
@@ -144,7 +157,7 @@ export const quizCommand: Command = {
         session.hintLevel += 1;
       }
       const embed = buildQuizEmbed(session, `💡 Đã mở thêm gợi ý (Cấp độ ${session.hintLevel}/3)!`);
-      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      await sendSafeReply(interaction, { embeds: [embed], components: [buildQuizButtons()] });
       return;
     }
 
@@ -155,7 +168,7 @@ export const quizCommand: Command = {
         session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
         activeQuizzes.set(channelId, session);
         const embed = buildQuizEmbed(session);
-        await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+        await sendSafeReply(interaction, { embeds: [embed], components: [buildQuizButtons()] });
         return;
       }
       const oldAnswer = session.puzzle.answer;
@@ -164,7 +177,7 @@ export const quizCommand: Command = {
       activeQuizzes.set(channelId, session);
 
       const embed = buildQuizEmbed(session, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
-      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      await sendSafeReply(interaction, { embeds: [embed], components: [buildQuizButtons()] });
       return;
     }
 
@@ -178,7 +191,7 @@ export const quizCommand: Command = {
       }
 
       if (!session) {
-        await interaction.reply({
+        await sendSafeReply(interaction, {
           content: '❌ Chưa có câu đố nào đang diễn ra. Hãy gõ `/quiz start` để bắt đầu!',
           flags: 64,
         });
@@ -186,7 +199,7 @@ export const quizCommand: Command = {
       }
 
       if (!guessInput) {
-        await interaction.reply({
+        await sendSafeReply(interaction, {
           content: '❌ Vui lòng nhập đáp án của bạn.',
           flags: 64,
         });
@@ -211,10 +224,10 @@ export const quizCommand: Command = {
               `💡 Giải nghĩa: ${currentPuzzle.hintText}`,
           );
 
-        await interaction.reply({ embeds: [winEmbed], components: [buildNextButton()] });
+        await sendSafeReply(interaction, { embeds: [winEmbed], components: [buildNextButton()] });
         return;
       } else {
-        await interaction.reply({
+        await sendSafeReply(interaction, {
           content: `❌ Đáp án \`${guessInput}\` chưa chính xác! Hãy thử lại hoặc bấm **[💡 Gợi ý]**.`,
           flags: 64,
         });
@@ -266,6 +279,23 @@ export async function handleQuizInteraction(
 
   const customId = interaction.customId;
 
+  // Helper an toàn cho button update
+  const sendSafeUpdate = async (payload: any) => {
+    if (interaction.isButton()) {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply(payload);
+      } else {
+        await interaction.update(payload);
+      }
+    } else if (interaction.isModalSubmit()) {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply(payload);
+      } else {
+        await interaction.reply(payload);
+      }
+    }
+  };
+
   // 1. Modal mở để người dùng điền đáp án
   if (interaction.isButton() && customId === 'quiz:answer') {
     const modal = new ModalBuilder()
@@ -295,7 +325,7 @@ export async function handleQuizInteraction(
     activeQuizzes.set(channelId, newSession);
 
     const embed = buildQuizEmbed(newSession);
-    await interaction.update({ embeds: [embed], components: [buildQuizButtons()] });
+    await sendSafeUpdate({ embeds: [embed], components: [buildQuizButtons()] });
     return;
   }
 
@@ -312,7 +342,7 @@ export async function handleQuizInteraction(
       session.hintLevel += 1;
     }
     const embed = buildQuizEmbed(session, `💡 Đã mở thêm gợi ý (Cấp độ ${session.hintLevel}/3)!`);
-    await interaction.update({ embeds: [embed], components: [buildQuizButtons()] });
+    await sendSafeUpdate({ embeds: [embed], components: [buildQuizButtons()] });
     return;
   }
 
@@ -324,7 +354,7 @@ export async function handleQuizInteraction(
     activeQuizzes.set(channelId, newSession);
 
     const embed = buildQuizEmbed(newSession, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
-    await interaction.update({ embeds: [embed], components: [buildQuizButtons()] });
+    await sendSafeUpdate({ embeds: [embed], components: [buildQuizButtons()] });
     return;
   }
 
@@ -349,9 +379,9 @@ export async function handleQuizInteraction(
             `💡 Giải nghĩa: ${currentPuzzle.hintText}`,
         );
 
-      await interaction.reply({ embeds: [winEmbed], components: [buildNextButton()] });
+      await sendSafeUpdate({ embeds: [winEmbed], components: [buildNextButton()] });
     } else {
-      await interaction.reply({
+      await sendSafeUpdate({
         content: `❌ Đáp án \`${userGuess}\` chưa chính xác! Hãy thử lại hoặc bấm **[💡 Gợi ý]**.`,
         flags: 64, // Ephemeral
       });
