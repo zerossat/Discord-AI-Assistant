@@ -35,6 +35,25 @@ async function bootstrap(): Promise<void> {
   registerVoiceStateUpdate(client);
   registerMessageCreate(client, services);
 
+  // 2b. Auto-register slash commands with Discord API on startup
+  try {
+    const { REST, Routes } = await import('discord.js');
+    const { commands } = await import('./commands');
+    const body = commands.map((c) => c.data.toJSON());
+    const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
+    await rest.put(Routes.applicationCommands(env.DISCORD_CLIENT_ID), { body });
+    logger.info(`✅ Auto-registered ${body.length} global slash command(s) with Discord`);
+    if (env.DISCORD_DEV_GUILD_ID) {
+      await rest.put(
+        Routes.applicationGuildCommands(env.DISCORD_CLIENT_ID, env.DISCORD_DEV_GUILD_ID),
+        { body },
+      );
+      logger.info(`✅ Auto-registered ${body.length} guild command(s) for dev guild ${env.DISCORD_DEV_GUILD_ID}`);
+    }
+  } catch (err) {
+    logger.warn({ err }, 'Failed to auto-register slash commands at startup');
+  }
+
   // 3. HTTP API (dashboard + Swagger)
   const app = createApp(client, services);
   const server = app.listen(env.API_PORT, () => {
