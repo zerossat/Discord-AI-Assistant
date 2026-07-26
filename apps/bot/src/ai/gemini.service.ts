@@ -142,7 +142,7 @@ export class GeminiService {
           const thinkingEnabled =
             options.thinkingBudget != null &&
             options.thinkingBudget > 0 &&
-            model.includes('2.5');
+            (model.includes('2.5') || model.includes('3.'));
           const response = await client.models.generateContent({
             model,
             contents,

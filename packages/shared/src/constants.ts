@@ -7,10 +7,15 @@ export const DEFAULT_MEMORY_CACHE_TTL = 3600;
 
 /**
  * Models we expose in `/config` and the dashboard dropdown.
- * Gemini 2.5 (Flash, Pro, Flash-Lite), Gemini 2.0 (Flash, Flash-Lite), and Gemini 1.5.
- * See https://ai.google.dev/gemini-api/docs/models
+ * Supports Gemini 3.6, 3.5, 3.1, 2.5, 2.0, and 1.5.
  */
 export const SUPPORTED_AI_MODELS = [
+  'gemini-3.6-pro',
+  'gemini-3.6-flash',
+  'gemini-3.5-pro',
+  'gemini-3.5-flash',
+  'gemini-3.1-pro',
+  'gemini-3.1-flash',
   'gemini-2.5-flash',
   'gemini-2.5-pro',
   'gemini-2.5-flash-lite',
