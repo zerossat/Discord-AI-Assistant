@@ -138,8 +138,8 @@ export const quizCommand: Command = {
 
     let session = activeQuizzes.get(channelId);
 
-    // 1. /quiz start -> Bắt đầu lượt chơi mới
-    if (subcommand === 'start') {
+    // 1. /quiz start (hoặc fallback) -> Bắt đầu lượt chơi mới
+    if (subcommand === 'start' || !['hint', 'skip', 'answer'].includes(subcommand)) {
       const puzzle = getRandomPuzzle(session?.puzzle.id);
       session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
       activeQuizzes.set(channelId, session);

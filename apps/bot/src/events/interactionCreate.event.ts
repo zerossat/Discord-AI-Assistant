@@ -46,6 +46,13 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
     const command = commandMap.get(interaction.commandName);
     if (!command) {
       log.warn({ command: interaction.commandName }, 'received unknown command');
+      try {
+        if (interaction.deferred || interaction.replied) {
+          await interaction.editReply(`⚠️ Lệnh \`/${interaction.commandName}\` không tồn tại.`);
+        }
+      } catch {
+        // Ignore
+      }
       return;
     }
 
@@ -63,6 +70,15 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
         }
       } catch (replyErr) {
         log.error({ err: replyErr }, 'failed to send error reply');
+      }
+    } finally {
+      // Guaranteed safety net: Edit deferred reply if execution completed without replying
+      if (interaction.deferred && !interaction.replied) {
+        try {
+          await interaction.editReply('✅ Lệnh đã hoàn tất.');
+        } catch {
+          // Ignore
+        }
       }
     }
   });
