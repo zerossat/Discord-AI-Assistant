@@ -43,12 +43,17 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
       log.error({ err }, 'failed to defer reply');
     }
 
-    const command = commandMap.get(interaction.commandName);
+    const commandName = interaction.commandName.toLowerCase().trim();
+    const command = commandMap.get(commandName) || commandMap.get(interaction.commandName);
+
     if (!command) {
-      log.warn({ command: interaction.commandName }, 'received unknown command');
+      log.warn(
+        { command: interaction.commandName, available: Array.from(commandMap.keys()) },
+        'received unknown command',
+      );
       try {
         if (interaction.deferred || interaction.replied) {
-          await interaction.editReply(`⚠️ Lệnh \`/${interaction.commandName}\` không tồn tại.`);
+          await interaction.editReply(`⚠️ Lệnh \`/${interaction.commandName}\` không được tìm thấy.`);
         }
       } catch {
         // Ignore
