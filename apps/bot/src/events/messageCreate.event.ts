@@ -1,4 +1,5 @@
 import { Events, type Client, type Message, EmbedBuilder, AttachmentBuilder, GuildMember } from 'discord.js';
+import { checkQuizChatMessage } from '../commands/quiz.command';
 import type { ServiceContainer } from '../services';
 import { childLogger } from '../utils/logger';
 import { speak } from '../utils/voice.manager';
@@ -10,6 +11,13 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
   client.on(Events.MessageCreate, async (message: Message) => {
     // Không xử lý tin nhắn của Bot
     if (message.author.bot) return;
+
+    // 1. Kiểm tra nếu người dùng gõ đáp án câu đố Đuổi hình bắt chữ trực tiếp trong chat
+    try {
+      if (await checkQuizChatMessage(message)) return;
+    } catch (err) {
+      log.error({ err }, 'checkQuizChatMessage failed');
+    }
 
     const content = message.content.trim();
     const lowerContent = content.toLowerCase();
