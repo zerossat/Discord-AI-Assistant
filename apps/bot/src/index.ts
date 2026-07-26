@@ -28,6 +28,10 @@ async function bootstrap(): Promise<void> {
       logger.error('❌ DISCORD_TOKEN is missing! Please set DISCORD_TOKEN in Railway Variables.');
     } else {
       await client.login(env.DISCORD_TOKEN);
+      // Auto-deploy slash commands asynchronously in background so Railway is always synced with Discord API
+      import('./deploy-commands')
+        .then(({ deploySlashCommands }) => deploySlashCommands())
+        .catch((err) => logger.warn({ err }, 'Background slash command deploy failed'));
     }
   } catch (err) {
     logger.error({ err }, '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.');
