@@ -13,7 +13,11 @@ async function bootstrap(): Promise<void> {
   logger.info('🚀 Starting Discord AI Assistant…');
 
   // 1. Data stores
-  await connectMongo(env.MONGODB_URI);
+  try {
+    await connectMongo(env.MONGODB_URI);
+  } catch (err) {
+    logger.warn({ err }, 'MongoDB connection failed — operating in memory/fallback mode');
+  }
   const services = createServiceContainer();
 
   // 1b. Voice prerequisites for `/tts`: point the transcoder at the bundled

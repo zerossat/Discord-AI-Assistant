@@ -125,6 +125,14 @@ export const quizCommand: Command = {
     ),
 
   async execute(interaction) {
+    try {
+      if (!interaction.deferred && !interaction.replied) {
+        await interaction.deferReply();
+      }
+    } catch {
+      // Ignore if already deferred
+    }
+
     const channelId = interaction.channelId;
     let subcommand: string | null = null;
     try {
