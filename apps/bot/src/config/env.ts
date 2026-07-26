@@ -29,7 +29,10 @@ const envSchema = z.object({
   GEMINI_API_KEYS: z.string().optional().default(''),
   GEMINI_MODEL: z.string().min(1).default('gemini-2.5-flash'),
   // Models tried (in order) when the primary model is exhausted/unavailable.
-  GEMINI_FALLBACK_MODELS: z.string().optional().default('gemini-2.5-flash-lite'),
+  GEMINI_FALLBACK_MODELS: z
+    .string()
+    .optional()
+    .default('gemini-2.5-flash-lite,gemini-2.0-flash,gemini-1.5-flash'),
 
   // Data stores
   MONGODB_URI: z.string().default(process.env.MONGODB_URI || 'mongodb://localhost:27017/discord-bot'),
