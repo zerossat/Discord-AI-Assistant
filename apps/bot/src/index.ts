@@ -54,7 +54,15 @@ async function bootstrap(): Promise<void> {
   });
 
   // 4. Connect to Discord
-  await client.login(env.DISCORD_TOKEN);
+  try {
+    if (!env.DISCORD_TOKEN) {
+      logger.error('❌ DISCORD_TOKEN is missing! Please set DISCORD_TOKEN in Railway Variables.');
+    } else {
+      await client.login(env.DISCORD_TOKEN);
+    }
+  } catch (err) {
+    logger.error({ err }, '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.');
+  }
 
   // Graceful shutdown
   const shutdown = async (signal: string): Promise<void> => {
