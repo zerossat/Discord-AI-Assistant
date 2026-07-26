@@ -49,7 +49,7 @@ function buildQuizEmbed(session: ActiveQuizSession, statusMessage?: string): Emb
         `**Chủ đề:** ${puzzle.category}\n` +
         (hintLevel >= 2 ? `\n💡 **Gợi ý chi tiết:** *${puzzle.hintText}*` : ''),
     )
-    .setFooter({ text: 'Nhấn [💡 Gợi ý], [🎯 Trả lời] hoặc [⏭️ Câu khác] bên dưới' });
+    .setFooter({ text: 'Dùng /quiz start | /quiz hint | /quiz answer hoặc nhấn nút bên dưới' });
 
   if (statusMessage) {
     embed.addFields({ name: '📢 Thông báo', value: statusMessage });
@@ -91,21 +91,91 @@ export const quizCommand: Command = {
   data: new SlashCommandBuilder()
     .setName(COMMAND_NAMES.QUIZ)
     .setDescription('🧩 Trò chơi Đuổi Hình Bắt Chữ tương tác với gợi ý')
-    .addStringOption((o) =>
-      o.setName('dap-an').setDescription('Nhập đáp án bạn dự đoán').setRequired(false),
+    .addSubcommand((sub) =>
+      sub.setName('start').setDescription('🎮 Bắt đầu một lượt chơi Đuổi Hình Bắt Chữ mới'),
+    )
+    .addSubcommand((sub) =>
+      sub.setName('hint').setDescription('💡 Mở thêm gợi ý cho câu đố hiện tại'),
+    )
+    .addSubcommand((sub) =>
+      sub
+        .setName('answer')
+        .setDescription('🎯 Trả lời đáp án cho câu đố hiện tại')
+        .addStringOption((o) =>
+          o.setName('dap-an').setDescription('Nhập đáp án bạn dự đoán').setRequired(true),
+        ),
+    )
+    .addSubcommand((sub) =>
+      sub.setName('skip').setDescription('⏭️ Bỏ qua câu đố hiện tại và xem đáp án'),
     ),
 
   async execute(interaction) {
     const channelId = interaction.channelId;
-    const guessInput = interaction.options.getString('dap-an');
+    const subcommand = interaction.options.getSubcommand(false) ?? 'start';
     let session = activeQuizzes.get(channelId);
 
-    // Nếu người dùng nhập trực tiếp đáp án qua lệnh
-    if (guessInput && session) {
+    // 1. /quiz start -> Bắt đầu lượt chơi mới
+    if (subcommand === 'start') {
+      const puzzle = getRandomPuzzle(session?.puzzle.id);
+      session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+      activeQuizzes.set(channelId, session);
+
+      const embed = buildQuizEmbed(session, '🎮 Lượt chơi mới đã bắt đầu!');
+      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      return;
+    }
+
+    // 2. /quiz hint -> Mở gợi ý
+    if (subcommand === 'hint') {
+      if (!session) {
+        const puzzle = getRandomPuzzle();
+        session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+        activeQuizzes.set(channelId, session);
+      }
+      if (session.hintLevel < 3) {
+        session.hintLevel += 1;
+      }
+      const embed = buildQuizEmbed(session, `💡 Đã mở thêm gợi ý (Cấp độ ${session.hintLevel}/3)!`);
+      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      return;
+    }
+
+    // 3. /quiz skip -> Bỏ qua
+    if (subcommand === 'skip') {
+      if (!session) {
+        const puzzle = getRandomPuzzle();
+        session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+        activeQuizzes.set(channelId, session);
+        const embed = buildQuizEmbed(session);
+        await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+        return;
+      }
+      const oldAnswer = session.puzzle.answer;
+      const newPuzzle = getRandomPuzzle(session.puzzle.id);
+      session = { puzzle: newPuzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+      activeQuizzes.set(channelId, session);
+
+      const embed = buildQuizEmbed(session, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
+      await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
+      return;
+    }
+
+    // 4. /quiz answer -> Trả lời đáp án
+    if (subcommand === 'answer') {
+      const guessInput = interaction.options.getString('dap-an', true);
+      if (!session) {
+        await interaction.reply({
+          content: '❌ Chưa có câu đố nào đang diễn ra. Hãy gõ `/quiz start` để bắt đầu!',
+          flags: 64,
+        });
+        return;
+      }
+
       const userNorm = removeVietnameseAccents(guessInput);
       const targetNorm = session.puzzle.normalizedAnswer;
 
       if (userNorm === targetNorm) {
+        const currentPuzzle = session.puzzle;
         activeQuizzes.delete(channelId);
         const member = interaction.member instanceof GuildMember ? interaction.member : null;
         const winnerName = member?.displayName ?? interaction.user.displayName;
@@ -114,9 +184,9 @@ export const quizCommand: Command = {
           .setColor(0x57f287)
           .setTitle('🎉 CHÚC MỪNG! BẠN ĐÃ TRẢ LỜI ĐÚNG!')
           .setDescription(
-            `🏆 **${winnerName}** đã đoán chính xác đáp án: **${session.puzzle.answer}**!\n\n` +
-              `🧩 Hình đố: ${session.puzzle.question}\n` +
-              `💡 Giải nghĩa: ${session.puzzle.hintText}`,
+            `🏆 **${winnerName}** đã đoán chính xác đáp án: **${currentPuzzle.answer}**!\n\n` +
+              `🧩 Hình đố: ${currentPuzzle.question}\n` +
+              `💡 Giải nghĩa: ${currentPuzzle.hintText}`,
           );
 
         await interaction.reply({ embeds: [winEmbed], components: [buildNextButton()] });
@@ -124,21 +194,11 @@ export const quizCommand: Command = {
       } else {
         await interaction.reply({
           content: `❌ Đáp án \`${guessInput}\` chưa chính xác! Hãy thử lại hoặc bấm **[💡 Gợi ý]**.`,
-          flags: 64, // Ephemeral
+          flags: 64,
         });
         return;
       }
     }
-
-    // Tạo câu đố mới nếu chưa có câu đố trong kênh
-    if (!session) {
-      const puzzle = getRandomPuzzle();
-      session = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
-      activeQuizzes.set(channelId, session);
-    }
-
-    const embed = buildQuizEmbed(session);
-    await interaction.reply({ embeds: [embed], components: [buildQuizButtons()] });
   },
 };
 
@@ -208,7 +268,7 @@ export async function handleQuizInteraction(
     const newSession: ActiveQuizSession = { puzzle: newPuzzle, hintLevel: 1, channelId, createdAt: Date.now() };
     activeQuizzes.set(channelId, newSession);
 
-    const embed = buildQuizEmbed(newSession, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
+    const embed = buildQuizEmbed(session, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
     await interaction.update({ embeds: [embed], components: [buildQuizButtons()] });
     return;
   }
