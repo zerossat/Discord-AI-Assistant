@@ -95,8 +95,10 @@ async function sendSafeReply(
   interaction: ChatInputCommandInteraction,
   payload: any,
 ): Promise<void> {
+  // Loại bỏ flag 64 nếu đã deferred để tránh lỗi DiscordAPIError 50035
   if (interaction.deferred || interaction.replied) {
-    await interaction.editReply(payload);
+    const { flags, ...cleanPayload } = payload;
+    await interaction.editReply(cleanPayload);
   } else {
     await interaction.reply(payload);
   }
@@ -125,14 +127,6 @@ export const quizCommand: Command = {
     ),
 
   async execute(interaction) {
-    try {
-      if (!interaction.deferred && !interaction.replied) {
-        await interaction.deferReply();
-      }
-    } catch {
-      // Ignore if already deferred
-    }
-
     const channelId = interaction.channelId;
     let subcommand: string | null = null;
     try {
@@ -201,7 +195,6 @@ export const quizCommand: Command = {
       if (!session) {
         await sendSafeReply(interaction, {
           content: '❌ Chưa có câu đố nào đang diễn ra. Hãy gõ `/quiz start` để bắt đầu!',
-          flags: 64,
         });
         return;
       }
@@ -209,7 +202,6 @@ export const quizCommand: Command = {
       if (!guessInput) {
         await sendSafeReply(interaction, {
           content: '❌ Vui lòng nhập đáp án của bạn.',
-          flags: 64,
         });
         return;
       }
@@ -237,7 +229,6 @@ export const quizCommand: Command = {
       } else {
         await sendSafeReply(interaction, {
           content: `❌ Đáp án \`${guessInput}\` chưa chính xác! Hãy thử lại hoặc bấm **[💡 Gợi ý]**.`,
-          flags: 64,
         });
         return;
       }
@@ -291,13 +282,15 @@ export async function handleQuizInteraction(
   const sendSafeUpdate = async (payload: any) => {
     if (interaction.isButton()) {
       if (interaction.deferred || interaction.replied) {
-        await interaction.editReply(payload);
+        const { flags, ...cleanPayload } = payload;
+        await interaction.editReply(cleanPayload);
       } else {
         await interaction.update(payload);
       }
     } else if (interaction.isModalSubmit()) {
       if (interaction.deferred || interaction.replied) {
-        await interaction.editReply(payload);
+        const { flags, ...cleanPayload } = payload;
+        await interaction.editReply(cleanPayload);
       } else {
         await interaction.reply(payload);
       }
@@ -359,9 +352,9 @@ export async function handleQuizInteraction(
     const oldAnswer = session.puzzle.answer;
     const newPuzzle = getRandomPuzzle(session.puzzle.id);
     const newSession: ActiveQuizSession = { puzzle: newPuzzle, hintLevel: 1, channelId, createdAt: Date.now() };
-    activeQuizzes.set(channelId, newSession);
+    activeQuizzes.set(channelId, session);
 
-    const embed = buildQuizEmbed(newSession, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
+    const embed = buildQuizEmbed(session, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);
     await sendSafeUpdate({ embeds: [embed], components: [buildQuizButtons()] });
     return;
   }
@@ -391,7 +384,6 @@ export async function handleQuizInteraction(
     } else {
       await sendSafeUpdate({
         content: `❌ Đáp án \`${userGuess}\` chưa chính xác! Hãy thử lại hoặc bấm **[💡 Gợi ý]**.`,
-        flags: 64, // Ephemeral
       });
     }
   }
