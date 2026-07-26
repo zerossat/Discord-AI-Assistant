@@ -21,7 +21,10 @@ export const configCommand: Command = {
         .setName('set')
         .setDescription('Cập nhật cấu hình')
         .addStringOption((o) =>
-          o.setName('model').setDescription('AI model').addChoices(...MODEL_CHOICES),
+          o
+            .setName('model')
+            .setDescription('AI model (vd: gemini-2.5-flash, gemini-3.6-pro...)')
+            .setAutocomplete(true),
         )
         .addStringOption((o) =>
           o

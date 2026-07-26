@@ -1,4 +1,5 @@
 import { Events, MessageFlags, type Client, type Interaction } from 'discord.js';
+import { SUPPORTED_AI_MODELS } from '@daa/shared';
 import { commandMap } from '../commands';
 import { handleMenuSelect } from '../commands/catalog';
 import { handleQuizInteraction } from '../commands/quiz.command';
@@ -9,6 +10,27 @@ const log = childLogger('interaction');
 
 export function registerInteractionCreate(client: Client, services: ServiceContainer): void {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
+    // Autocomplete handler for `/config set model:...`
+    if (interaction.isAutocomplete()) {
+      if (interaction.commandName === 'config') {
+        try {
+          const focusedOption = interaction.options.getFocused(true);
+          if (focusedOption.name === 'model') {
+            const query = focusedOption.value.toLowerCase().trim();
+            const filtered = SUPPORTED_AI_MODELS.filter((m) =>
+              m.toLowerCase().includes(query),
+            )
+              .slice(0, 25)
+              .map((m) => ({ name: m, value: m }));
+            await interaction.respond(filtered);
+          }
+        } catch (err) {
+          log.error({ err }, 'autocomplete failed');
+        }
+      }
+      return;
+    }
+
     // Interactive `/menu` category dropdown.
     if (interaction.isStringSelectMenu()) {
       try {
