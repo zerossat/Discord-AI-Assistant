@@ -16,17 +16,19 @@ async function main(): Promise<void> {
   const body = commands.map((command) => command.data.toJSON());
   const rest = new REST({ version: '10' }).setToken(env.DISCORD_TOKEN);
 
+  // 1. Register globally for all servers
+  await rest.put(Routes.applicationCommands(env.DISCORD_CLIENT_ID), { body });
+  logger.info(`✅ Registered ${body.length} global command(s) for all servers.`);
+
+  // 2. Register to dev guild for instant update if configured
   if (env.DISCORD_DEV_GUILD_ID) {
     await rest.put(
       Routes.applicationGuildCommands(env.DISCORD_CLIENT_ID, env.DISCORD_DEV_GUILD_ID),
       { body },
     );
     logger.info(
-      `✅ Registered ${body.length} guild command(s) to ${env.DISCORD_DEV_GUILD_ID}`,
+      `✅ Registered ${body.length} guild command(s) instantly to dev guild ${env.DISCORD_DEV_GUILD_ID}`,
     );
-  } else {
-    await rest.put(Routes.applicationCommands(env.DISCORD_CLIENT_ID), { body });
-    logger.info(`✅ Registered ${body.length} global command(s)`);
   }
 }
 

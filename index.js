@@ -31,7 +31,7 @@ function spawnDashboard() {
   const isWin = process.platform === 'win32';
   const cmd = isWin ? 'pnpm.cmd' : 'npx';
   const port = process.env.PORT || '3000';
-  const args = isWin ? ['start'] : ['next', 'start', '-p', port];
+  const args = isWin ? ['start'] : ['next', 'start', '-H', '0.0.0.0', '-p', port];
 
   return spawn(cmd, args, {
     stdio: 'inherit',

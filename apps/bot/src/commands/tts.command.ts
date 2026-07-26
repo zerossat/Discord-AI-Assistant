@@ -50,16 +50,19 @@ export const ttsCommand: Command = {
 
     await interaction.deferReply();
 
+    const speakerName = member?.displayName ?? interaction.user.displayName ?? interaction.user.username;
+    const spokenText = `${speakerName} đã nói: ${text}`;
+
     // 1) Tạo audio. Nếu chọn Gemini mà lỗi (vd: hết quota) → tự chuyển sang Google.
     let audio: TtsResult;
     let usedVoice = engine === 'gemini' ? 'Gemini' : 'Google';
     try {
-      audio = engine === 'gemini' ? await services.tts.gemini(text) : await services.tts.google(text);
+      audio = engine === 'gemini' ? await services.tts.gemini(spokenText) : await services.tts.google(spokenText);
     } catch (err) {
       if (engine === 'gemini') {
         log.warn({ err }, 'Gemini TTS lỗi — chuyển sang Google');
         usedVoice = 'Google (dự phòng)';
-        audio = await services.tts.google(text);
+        audio = await services.tts.google(spokenText);
       } else {
         throw err;
       }
@@ -68,7 +71,7 @@ export const ttsCommand: Command = {
     // 2) Phát trong kênh thoại và GIỮ kết nối (không tự rời).
     let spoke = false;
     try {
-      await speak(channel, audio.buffer);
+      await speak(channel, audio.buffer, services.music);
       spoke = true;
     } catch (err) {
       log.warn({ err }, 'không phát được trong kênh thoại');
@@ -81,7 +84,7 @@ export const ttsCommand: Command = {
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
       .setTitle('🔊 Text-to-Speech')
-      .setDescription(`${status}\n\n**Giọng:** ${usedVoice}\n**Nội dung:** ${text.slice(0, 800)}`);
+      .setDescription(`📢 **${speakerName}** đã nói: **${text.slice(0, 500)}**\n\n${status}\n\n**Giọng:** ${usedVoice}`);
 
     if (spoke) {
       await interaction.editReply({ embeds: [embed] });

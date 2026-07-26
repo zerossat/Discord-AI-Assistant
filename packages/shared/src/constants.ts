@@ -33,6 +33,12 @@ export const COMMAND_NAMES = {
   LEAVE: 'leave',
   HELP: 'help',
   MENU: 'menu',
+  PLAY: 'play',
+  SKIP: 'skip',
+  STOP: 'stop',
+  PAUSE: 'pause',
+  RESUME: 'resume',
+  QUEUE: 'queue',
 } as const;
 
 export type CommandName = (typeof COMMAND_NAMES)[keyof typeof COMMAND_NAMES];

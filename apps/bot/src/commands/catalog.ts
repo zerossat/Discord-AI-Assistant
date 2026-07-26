@@ -49,6 +49,19 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
     ],
   },
   {
+    id: 'music',
+    label: 'Âm nhạc',
+    emoji: '🎵',
+    commands: [
+      { usage: '/play <truy vấn>', desc: 'Phát nhạc từ URL (YouTube, SoundCloud, Spotify) hoặc tìm kiếm' },
+      { usage: '/pause', desc: 'Tạm dừng nhạc đang phát' },
+      { usage: '/resume', desc: 'Tiếp tục nhạc đang tạm dừng' },
+      { usage: '/skip', desc: 'Bỏ qua bài hát hiện tại' },
+      { usage: '/stop', desc: 'Dừng nhạc, xoá hàng chờ và rời kênh thoại' },
+      { usage: '/queue', desc: 'Xem danh sách bài hát trong hàng chờ' },
+    ],
+  },
+  {
     id: 'admin',
     label: 'Cấu hình & Thống kê',
     emoji: '⚙️',

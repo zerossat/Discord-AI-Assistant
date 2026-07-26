@@ -12,6 +12,12 @@ import { ttsCommand } from './tts.command';
 import { leaveCommand } from './leave.command';
 import { helpCommand } from './help.command';
 import { menuCommand } from './menu.command';
+import { playCommand } from './play.command';
+import { skipCommand } from './skip.command';
+import { stopCommand } from './stop.command';
+import { pauseCommand } from './pause.command';
+import { resumeCommand } from './resume.command';
+import { queueCommand } from './queue.command';
 
 /** Ordered list of all slash commands the bot exposes. */
 export const commands: Command[] = [
@@ -28,6 +34,12 @@ export const commands: Command[] = [
   leaveCommand,
   helpCommand,
   menuCommand,
+  playCommand,
+  skipCommand,
+  stopCommand,
+  pauseCommand,
+  resumeCommand,
+  queueCommand,
 ];
 
 /** Fast lookup by command name, used by the interaction handler. */

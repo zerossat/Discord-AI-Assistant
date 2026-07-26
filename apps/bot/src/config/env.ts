@@ -37,7 +37,7 @@ const envSchema = z.object({
   REDIS_URL: z.string().min(1, 'REDIS_URL is required'),
 
   // HTTP API
-  API_PORT: portString.default(process.env.PORT || 4000),
+  API_PORT: portString.default(process.env.PORT ? Number(process.env.PORT) : 4000),
   JWT_SECRET: z.string().min(8, 'JWT_SECRET must be at least 8 characters'),
 
   // Memory

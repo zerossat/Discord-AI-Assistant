@@ -19,7 +19,11 @@ const players = new Map<string, AudioPlayer>();
  * Join (or reuse) the user's voice channel, play `audio`, and STAY connected.
  * The bot leaves only when the channel empties (voiceState event) or `/leave`.
  */
-export async function speak(channel: VoiceBasedChannel, audio: Buffer): Promise<void> {
+export async function speak(
+  channel: VoiceBasedChannel,
+  audio: Buffer,
+  musicService?: any,
+): Promise<void> {
   const guildId = channel.guild.id;
 
   let connection = getVoiceConnection(guildId);
@@ -49,6 +53,14 @@ export async function speak(channel: VoiceBasedChannel, audio: Buffer): Promise<
 
   await entersState(connection, VoiceConnectionStatus.Ready, 15_000);
 
+  // Check if music is active in this guild
+  const musicSession = musicService?.getSession(guildId);
+  const wasPlayingMusic = musicSession && musicSession.currentSong && !musicSession.isPaused;
+
+  if (wasPlayingMusic) {
+    musicSession.player.pause();
+  }
+
   let player = players.get(guildId);
   if (!player) {
     player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
@@ -56,14 +68,32 @@ export async function speak(channel: VoiceBasedChannel, audio: Buffer): Promise<
       /* swallow — a bad clip shouldn't crash the bot */
     });
     players.set(guildId, player);
-    connection.subscribe(player);
-  } else if (isNewConnection) {
-    connection.subscribe(player);
   }
+
+  // Subscribe to TTS player
+  connection.subscribe(player);
 
   player.play(createAudioResource(Readable.from(audio)));
   await entersState(player, AudioPlayerStatus.Playing, 10_000);
-  // Intentionally NOT destroying the connection — the bot stays in the channel.
+
+  if (wasPlayingMusic) {
+    // Once TTS is done (Idle state), subscribe connection back to music player and resume
+    entersState(player, AudioPlayerStatus.Idle, 60_000)
+      .then(() => {
+        const currentSession = musicService?.getSession(guildId);
+        if (currentSession && currentSession.connection) {
+          currentSession.connection.subscribe(currentSession.player);
+          currentSession.player.unpause();
+        }
+      })
+      .catch(() => {
+        const currentSession = musicService?.getSession(guildId);
+        if (currentSession && currentSession.connection) {
+          currentSession.connection.subscribe(currentSession.player);
+          currentSession.player.unpause();
+        }
+      });
+  }
 }
 
 /** Leave the guild's voice channel and forget its player. Returns false if not connected. */

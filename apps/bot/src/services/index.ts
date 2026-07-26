@@ -12,12 +12,14 @@ import { MemoryService } from './memory.service';
 import { ChatService } from './chat.service';
 import { StatsService } from './stats.service';
 import { TtsService } from './tts.service';
+import { MusicService } from './music.service';
 
 export { CacheService } from './cache.service';
 export { MemoryService, type MemoryServiceOptions } from './memory.service';
 export { ChatService, type ChatContext } from './chat.service';
 export { StatsService } from './stats.service';
 export { TtsService } from './tts.service';
+export { MusicService } from './music.service';
 
 export interface Repositories {
   users: UserRepository;
@@ -34,6 +36,7 @@ export interface ServiceContainer {
   chat: ChatService;
   stats: StatsService;
   tts: TtsService;
+  music: MusicService;
 }
 
 /**
@@ -72,6 +75,7 @@ export function createServiceContainer(): ServiceContainer {
     repositories.settings,
   );
   const tts = new TtsService({ apiKeys: GEMINI_API_KEYS, logger });
+  const music = new MusicService(logger);
 
-  return { redis, cache, gemini, repositories, memory, chat, stats, tts };
+  return { redis, cache, gemini, repositories, memory, chat, stats, tts, music };
 }

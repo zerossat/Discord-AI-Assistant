@@ -46,15 +46,18 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
       return;
     }
 
+    const speakerName = member?.displayName ?? message.author.displayName ?? message.author.username;
+    const spokenText = `${speakerName} đã nói: ${rawText}`;
+
     // 1) Tạo audio
     let audio: TtsResult;
     try {
-      audio = engine === 'gemini' ? await services.tts.gemini(rawText) : await services.tts.google(rawText);
+      audio = engine === 'gemini' ? await services.tts.gemini(spokenText) : await services.tts.google(spokenText);
     } catch (err) {
       if (engine === 'gemini') {
         log.warn({ err }, 'Gemini TTS lỗi — chuyển sang Google');
         try {
-          audio = await services.tts.google(rawText);
+          audio = await services.tts.google(spokenText);
         } catch (innerErr) {
           log.error({ err: innerErr }, 'Google fallback failed');
           await message.reply('⚠️ Lỗi: Không thể kết xuất âm thanh từ Google và Gemini.');
@@ -70,18 +73,21 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
     // 2) Phát âm thanh trong kênh thoại
     let spoke = false;
     try {
-      await speak(channel, audio.buffer);
+      await speak(channel, audio.buffer, services.music);
       spoke = true;
     } catch (err) {
       log.warn({ err }, 'không phát được trong kênh thoại');
     }
 
-    // Nếu không vào được kênh thoại, gửi file đính kèm làm phương án dự phòng
-    if (!spoke) {
+    // Nếu phát thành công trong kênh thoại, phản hồi tin nhắn như ảnh mẫu
+    if (spoke) {
+      await message.reply(`📢 **${speakerName}** đã nói: **${rawText}**`);
+    } else {
+      // Nếu không vào được kênh thoại, gửi file đính kèm làm phương án dự phòng
       const attachment = new AttachmentBuilder(audio.buffer, { name: `tts.${audio.ext}` });
       await message.reply({
-        content: '⚠️ Không vào được kênh thoại (kiểm tra quyền **Connect/Speak** của bot). Đính kèm file âm thanh để bạn nghe tạm.',
-        files: [attachment]
+        content: `📢 **${speakerName}** đã nói: **${rawText}**\n⚠️ Không vào được kênh thoại (kiểm tra quyền **Connect/Speak** của bot). Đính kèm file âm thanh để bạn nghe tạm.`,
+        files: [attachment],
       });
     }
   });
