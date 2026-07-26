@@ -40,23 +40,7 @@ function spawnDashboard() {
   });
 }
 
-// Tự động đăng ký slash commands trên Production nếu file đã được build
-if (fs.existsSync(builtDeployPath)) {
-  console.log('🚀 Đang tự động đăng ký Slash Commands lên Discord (Production)...');
-  try {
-    const deployResult = spawnSync('node', [builtDeployPath], {
-      stdio: 'inherit',
-      cwd: __dirname
-    });
-    if (deployResult.status === 0) {
-      console.log('✅ Đăng ký Slash Commands thành công!');
-    } else {
-      console.warn('⚠️ Đăng ký Slash Commands kết thúc với mã lỗi:', deployResult.status);
-    }
-  } catch (err) {
-    console.error('❌ Lỗi khi tự động đăng ký Slash Commands:', err);
-  }
-}
+
 
 const botProcess = spawnBot();
 children.push(botProcess);

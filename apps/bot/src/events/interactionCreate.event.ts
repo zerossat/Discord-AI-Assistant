@@ -34,6 +34,15 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
 
     if (!interaction.isChatInputCommand()) return;
 
+    // Fast-path: Defer reply immediately (<20ms) so Discord never shows timeout errors!
+    try {
+      if (!interaction.deferred && !interaction.replied) {
+        await interaction.deferReply();
+      }
+    } catch (err) {
+      log.error({ err }, 'failed to defer reply');
+    }
+
     const command = commandMap.get(interaction.commandName);
     if (!command) {
       log.warn({ command: interaction.commandName }, 'received unknown command');

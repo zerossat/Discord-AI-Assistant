@@ -39,14 +39,6 @@ async function bootstrap(): Promise<void> {
   registerVoiceStateUpdate(client);
   registerMessageCreate(client, services);
 
-  // 2b. Auto-register slash commands with Discord API on startup (and clear duplicate guild commands)
-  try {
-    const { deploySlashCommands } = await import('./deploy-commands');
-    await deploySlashCommands();
-  } catch (err) {
-    logger.warn({ err }, 'Failed to auto-register slash commands at startup');
-  }
-
   // 3. HTTP API (dashboard + Swagger)
   const app = createApp(client, services);
   const server = app.listen(env.API_PORT, () => {
