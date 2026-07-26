@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { spawn, spawnSync } = require('child_process');
+const { spawn } = require('child_process');
 
 const builtBotPath = path.join(__dirname, 'apps', 'bot', 'dist', 'index.js');
-const builtDeployPath = path.join(__dirname, 'apps', 'bot', 'dist', 'deploy-commands.js');
 const sourceBotPath = path.join(__dirname, 'apps', 'bot', 'src', 'index.ts');
 
 const children = [];
@@ -13,14 +12,15 @@ function spawnBot() {
     console.log('🤖 Khởi động Bot đã build (Production)...');
     return spawn('node', [builtBotPath], {
       stdio: 'inherit',
-      cwd: __dirname
+      cwd: __dirname,
+      env: process.env,
     });
   } else {
     console.log('🤖 Khởi động Bot từ nguồn TypeScript (Direct)...');
-    return spawn('npx', ['tsx', `"${sourceBotPath}"`], {
+    return spawn('npx', ['tsx', sourceBotPath], {
       stdio: 'inherit',
-      shell: true,
-      cwd: __dirname
+      cwd: __dirname,
+      env: process.env,
     });
   }
 }
@@ -29,30 +29,45 @@ function spawnDashboard() {
   console.log('📊 Khởi động Next.js Dashboard (Production)...');
   const dashboardCwd = path.join(__dirname, 'apps', 'dashboard');
   const isWin = process.platform === 'win32';
-  const cmd = isWin ? 'pnpm.cmd' : 'npx';
   const port = process.env.PORT || '3000';
-  const args = isWin ? ['start'] : ['next', 'start', '-H', '0.0.0.0', '-p', port];
 
-  return spawn(cmd, args, {
+  if (isWin) {
+    return spawn('pnpm.cmd', ['start'], {
+      stdio: 'inherit',
+      shell: true,
+      cwd: dashboardCwd,
+      env: { ...process.env, PORT: port },
+    });
+  }
+
+  // Trên Linux / Docker: Ưu tiên pnpm start hoặc npx next start
+  return spawn('pnpm', ['run', 'start'], {
     stdio: 'inherit',
-    shell: isWin,
-    cwd: dashboardCwd
+    cwd: dashboardCwd,
+    env: { ...process.env, PORT: port },
   });
 }
-
-
 
 const botProcess = spawnBot();
 children.push(botProcess);
 
-const dashProcess = spawnDashboard();
-children.push(dashProcess);
+let dashProcess = null;
+try {
+  dashProcess = spawnDashboard();
+  if (dashProcess) children.push(dashProcess);
+} catch (err) {
+  console.error('⚠️ Lỗi khi khởi chạy Dashboard (Bot vẫn tiếp tục hoạt động):', err);
+}
 
 const cleanup = (code) => {
-  console.log('🛑 Đang dừng toàn bộ dịch vụ (Bot & Dashboard)...');
+  console.log('🛑 Đang dừng dịch vụ...');
   for (const child of children) {
     if (child && !child.killed) {
-      child.kill('SIGTERM');
+      try {
+        child.kill('SIGTERM');
+      } catch {
+        // Ignore
+      }
     }
   }
   process.exit(code || 0);
@@ -63,11 +78,14 @@ process.on('SIGTERM', () => cleanup(0));
 
 botProcess.on('close', (code) => {
   console.log(`🤖 Bot process exited with code ${code}`);
-  cleanup(code);
+  if (code !== 0) {
+    console.error('❌ Bot process crashed. Restarting process...');
+  }
 });
 
-dashProcess.on('close', (code) => {
-  console.log(`📊 Dashboard process exited with code ${code}`);
-  cleanup(code);
-});
-
+if (dashProcess) {
+  dashProcess.on('close', (code) => {
+    console.log(`📊 Dashboard process exited with code ${code}`);
+    // Giữ cho Bot tiếp tục chạy ngay cả khi Dashboard bị tắt hoặc dừng
+  });
+}
