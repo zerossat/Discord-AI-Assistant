@@ -49,6 +49,15 @@ export const COMMAND_NAMES = {
   RESUME: 'resume',
   QUEUE: 'queue',
   QUIZ: 'quiz',
+  IMAGINE: 'imagine',
+  RANK: 'rank',
+  LEADERBOARD: 'leaderboard',
+  HACKBOT: 'hackbot',
+  GUESSPROMPT: 'guessprompt',
+  GACHA: 'gacha',
+  CARDS: 'cards',
+  TITLES: 'titles',
+  TURING: 'turing',
 } as const;
 
 export type CommandName = (typeof COMMAND_NAMES)[keyof typeof COMMAND_NAMES];

@@ -196,7 +196,11 @@ export function generateMaskedHint(answer: string, level: number = 1): string {
         .map((char, index) => {
           if (level === 1 && index === 0) return char; // Reveal 1st letter
           if (level >= 2 && (index === 0 || index === length - 1)) return char; // Reveal 1st & last
-          if (level >= 3 && (index === 0 || index === Math.floor(length / 2) || index === length - 1)) return char;
+          if (
+            level >= 3 &&
+            (index === 0 || index === Math.floor(length / 2) || index === length - 1)
+          )
+            return char;
           return '_';
         })
         .join(' ');

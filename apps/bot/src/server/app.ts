@@ -1,9 +1,4 @@
-import express, {
-  type Express,
-  type NextFunction,
-  type Request,
-  type Response,
-} from 'express';
+import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import type { Client } from 'discord.js';
 import type { ServiceContainer } from '../services';

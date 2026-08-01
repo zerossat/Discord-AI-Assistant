@@ -36,13 +36,19 @@ export class ConversationRepository {
     guildId: string | null,
     limit: number,
   ): Promise<ConversationMessage[]> {
-    const doc = await ConversationModel.findOne({ userId, guildId }).lean<ConversationEntity | null>();
+    const doc = await ConversationModel.findOne({
+      userId,
+      guildId,
+    }).lean<ConversationEntity | null>();
     if (!doc) return [];
     return doc.messages.slice(-limit).map(toMessage);
   }
 
   async get(userId: string, guildId: string | null): Promise<Conversation | null> {
-    const doc = await ConversationModel.findOne({ userId, guildId }).lean<ConversationEntity | null>();
+    const doc = await ConversationModel.findOne({
+      userId,
+      guildId,
+    }).lean<ConversationEntity | null>();
     return doc ? toConversation(doc) : null;
   }
 
@@ -77,7 +83,9 @@ export class ConversationRepository {
   /** Summaries of stored conversations (most recently updated first). */
   async list(
     limit = 200,
-  ): Promise<{ userId: string; guildId: string | null; messageCount: number; updatedAt: string }[]> {
+  ): Promise<
+    { userId: string; guildId: string | null; messageCount: number; updatedAt: string }[]
+  > {
     const docs = await ConversationModel.find()
       .sort({ updatedAt: -1 })
       .limit(limit)

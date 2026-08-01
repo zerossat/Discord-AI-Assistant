@@ -322,7 +322,12 @@ export async function handleQuizInteraction(
   // 2. Nút "▶️ Câu tiếp theo"
   if (interaction.isButton() && customId === 'quiz:next') {
     const puzzle = getRandomPuzzle(session?.puzzle.id);
-    const newSession: ActiveQuizSession = { puzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+    const newSession: ActiveQuizSession = {
+      puzzle,
+      hintLevel: 1,
+      channelId,
+      createdAt: Date.now(),
+    };
     activeQuizzes.set(channelId, newSession);
 
     const embed = buildQuizEmbed(newSession);
@@ -351,7 +356,12 @@ export async function handleQuizInteraction(
   if (interaction.isButton() && customId === 'quiz:skip') {
     const oldAnswer = session.puzzle.answer;
     const newPuzzle = getRandomPuzzle(session.puzzle.id);
-    const newSession: ActiveQuizSession = { puzzle: newPuzzle, hintLevel: 1, channelId, createdAt: Date.now() };
+    const newSession: ActiveQuizSession = {
+      puzzle: newPuzzle,
+      hintLevel: 1,
+      channelId,
+      createdAt: Date.now(),
+    };
     activeQuizzes.set(channelId, session);
 
     const embed = buildQuizEmbed(session, `⏭️ Đã bỏ qua! Đáp án câu trước là: **${oldAnswer}**.`);

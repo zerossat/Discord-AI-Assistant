@@ -1,4 +1,14 @@
-import { Coins, Hash, MessagesSquare, Server, Users, ArrowRight, ExternalLink, Settings, Activity } from 'lucide-react';
+import {
+  Coins,
+  Hash,
+  MessagesSquare,
+  Server,
+  Users,
+  ArrowRight,
+  ExternalLink,
+  Settings,
+  Activity,
+} from 'lucide-react';
 import type { GuildSummary, StatsResponse } from '@daa/shared';
 import { getGuilds, getStats } from '@/lib/api';
 import { StatCard } from '@/components/stat-card';
@@ -119,7 +129,9 @@ export default async function DashboardPage() {
                           {g.memberCount != null ? formatNumber(g.memberCount) : '—'}
                         </td>
                         <td className="py-3.5 pr-4">
-                          <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold tracking-wide ${getModelBadge(g.aiModel)}`}>
+                          <span
+                            className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold tracking-wide ${getModelBadge(g.aiModel)}`}
+                          >
                             {g.aiModel}
                           </span>
                         </td>

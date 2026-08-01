@@ -133,8 +133,8 @@ export default async function Home() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400 leading-relaxed">
-          Trò chuyện tự nhiên, sinh mã nguồn thông minh, tóm tắt kênh chat và chuyển đổi văn bản sang
-          giọng nói (TTS) sống động – một hệ sinh thái AI toàn diện nâng tầm máy chủ của bạn.
+          Trò chuyện tự nhiên, sinh mã nguồn thông minh, tóm tắt kênh chat và chuyển đổi văn bản
+          sang giọng nói (TTS) sống động – một hệ sinh thái AI toàn diện nâng tầm máy chủ của bạn.
         </p>
 
         <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
@@ -274,4 +274,3 @@ export default async function Home() {
     </div>
   );
 }
-

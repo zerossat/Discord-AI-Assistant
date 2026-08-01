@@ -31,7 +31,8 @@ export default async function ConversationsPage() {
           Hội thoại
         </h1>
         <p className="text-sm text-slate-400 mt-1">
-          Lịch sử trò chuyện chi tiết giữa người dùng và Bot thông qua Server hoặc kênh chat riêng (DM).
+          Lịch sử trò chuyện chi tiết giữa người dùng và Bot thông qua Server hoặc kênh chat riêng
+          (DM).
         </p>
       </div>
 
@@ -79,7 +80,10 @@ export default async function ConversationsPage() {
                     const key = guildKey(c.guildId);
                     const isDM = !c.guildId || c.guildId === 'dm';
                     return (
-                      <tr key={`${c.userId}:${key}`} className="group hover:bg-white/[0.01] transition-colors">
+                      <tr
+                        key={`${c.userId}:${key}`}
+                        className="group hover:bg-white/[0.01] transition-colors"
+                      >
                         <td className="py-4 px-6">
                           <code className="rounded bg-white/5 border border-white/5 px-2 py-0.5 text-xs text-slate-400 font-mono">
                             {c.userId}
@@ -98,7 +102,9 @@ export default async function ConversationsPage() {
                             </span>
                           )}
                         </td>
-                        <td className="py-4 px-4 text-slate-300 font-medium">{c.messageCount} tin nhắn</td>
+                        <td className="py-4 px-4 text-slate-300 font-medium">
+                          {c.messageCount} tin nhắn
+                        </td>
                         <td className="py-4 px-4 text-slate-400">
                           {new Date(c.updatedAt).toLocaleString('vi-VN', {
                             dateStyle: 'medium',

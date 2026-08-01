@@ -51,17 +51,20 @@ export function StatCard({ label, value, icon: Icon }: StatCardProps) {
   return (
     <Card className="relative overflow-hidden border-white/5 bg-white/[0.01] transition-all duration-300 hover:scale-[1.02] hover:bg-white/[0.02] hover:border-white/10">
       {/* Decorative Glow inside Card */}
-      <div className={cn("absolute -right-4 -bottom-4 h-24 w-24 bg-gradient-to-br rounded-full blur-xl opacity-50 pointer-events-none", theme.glowClass)} />
+      <div
+        className={cn(
+          'absolute -right-4 -bottom-4 h-24 w-24 bg-gradient-to-br rounded-full blur-xl opacity-50 pointer-events-none',
+          theme.glowClass,
+        )}
+      />
 
       <CardContent className="flex items-center gap-5 p-6 relative z-10">
-        <div className={cn("rounded-xl p-3.5 border transition-all duration-300", theme.iconClass)}>
+        <div className={cn('rounded-xl p-3.5 border transition-all duration-300', theme.iconClass)}>
           <Icon className="h-6 w-6" />
         </div>
         <div className="space-y-1">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{label}</p>
-          <p className="text-3xl font-extrabold text-white tracking-tight">
-            {formatNumber(value)}
-          </p>
+          <p className="text-3xl font-extrabold text-white tracking-tight">{formatNumber(value)}</p>
         </div>
       </CardContent>
     </Card>

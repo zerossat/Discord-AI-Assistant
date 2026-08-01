@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { chunkMessage, estimateTokens } from '@daa/shared';
-import {
-  buildCodePrompt,
-  buildSummaryPrompt,
-  buildTranslatePrompt,
-} from '../ai/prompts';
+import { buildCodePrompt, buildSummaryPrompt, buildTranslatePrompt } from '../ai/prompts';
 
 describe('shared text utils', () => {
   it('chunkMessage keeps short text as a single chunk', () => {

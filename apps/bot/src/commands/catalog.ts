@@ -24,7 +24,8 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
     label: 'AI & Chat',
     emoji: '🤖',
     commands: [
-      { usage: '/ask <câu hỏi>', desc: 'Hỏi AI bất cứ điều gì (có ghi nhớ hội thoại)' },
+      { usage: '/ask <câu hỏi> [file]', desc: 'Hỏi AI bất cứ điều gì (có ghi nhớ & đọc file)' },
+      { usage: '/imagine <prompt> [style]', desc: 'Sinh ảnh nghệ thuật AI từ mô tả văn bản' },
       { usage: '/code <yêu cầu>', desc: 'Sinh code kèm giải thích & best practices' },
       { usage: '/translate <đến> <văn bản> [từ]', desc: 'Dịch văn bản giữa các ngôn ngữ' },
       { usage: '/summary [số tin]', desc: 'Tóm tắt các tin nhắn gần đây trong kênh' },
@@ -32,12 +33,32 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
   },
   {
     id: 'fun',
-    label: 'Giải trí',
-    emoji: '🔮',
+    label: 'Giải trí & Game AI',
+    emoji: '🎮',
     commands: [
+      {
+        usage: '/hackbot start|guess|hint|stop',
+        desc: 'Thử thách Prompt Injection đánh lừa AI lấy mật mã',
+      },
+      {
+        usage: '/guessprompt start|guess|hint|stop',
+        desc: 'Nhìn ảnh AI vẽ và đoán từ khóa prompt gốc',
+      },
+      { usage: '/gacha', desc: 'Quay Gacha mở Thẻ Bài Nhân Vật AI độc bản' },
+      { usage: '/cards [user]', desc: 'Xem kho sưu tập Thẻ Bài Gacha AI' },
+      {
+        usage: '/titles view|claim',
+        desc: 'AI phân tích phong cách chat & phong danh hiệu hài hước',
+      },
+      { usage: '/turing status|suspect|interrogate|vote|resolve', desc: 'Dự Án Turing — Game Ma Sói AI & Tòa Án Phán Xét 24/7' },
+      { usage: '/rank [user]', desc: 'Xem thẻ cấp độ (Level) và điểm XP' },
+      { usage: '/leaderboard', desc: 'Xem Bảng xếp hạng XP cao thủ server' },
       { usage: '/tarot [số lá] [câu hỏi]', desc: 'Bói bài Tarot — rút bài & luận giải bằng AI' },
       { usage: '/ship <người ấy> [người 2]', desc: 'Đo độ hợp % giữa hai người' },
-      { usage: '/quiz start|hint|answer|skip', desc: 'Trò chơi Đuổi Hình Bắt Chữ tương tác với gợi ý' },
+      {
+        usage: '/quiz start|hint|answer|skip',
+        desc: 'Trò chơi Đuổi Hình Bắt Chữ tương tác với gợi ý',
+      },
     ],
   },
   {
@@ -54,7 +75,10 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
     label: 'Âm nhạc',
     emoji: '🎵',
     commands: [
-      { usage: '/play <truy vấn>', desc: 'Phát nhạc từ URL (YouTube, SoundCloud, Spotify) hoặc tìm kiếm' },
+      {
+        usage: '/play <truy vấn>',
+        desc: 'Phát nhạc từ URL (YouTube, SoundCloud, Spotify) hoặc tìm kiếm',
+      },
       { usage: '/pause', desc: 'Tạm dừng nhạc đang phát' },
       { usage: '/resume', desc: 'Tiếp tục nhạc đang tạm dừng' },
       { usage: '/skip', desc: 'Bỏ qua bài hát hiện tại' },

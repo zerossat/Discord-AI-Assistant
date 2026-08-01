@@ -12,6 +12,12 @@ export interface UserEntity {
   username: string;
   preferences: UserPreferencesEntity;
   totalTokens: number;
+  xp: number;
+  level: number;
+  lastXpAt?: Date;
+  cards?: any[];
+  titles?: any[];
+  lastGachaAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +37,12 @@ const userSchema = new Schema<UserEntity>(
     username: { type: String, required: true },
     preferences: { type: preferencesSchema, default: () => ({}) },
     totalTokens: { type: Number, default: 0 },
+    xp: { type: Number, default: 0, index: true },
+    level: { type: Number, default: 1 },
+    lastXpAt: { type: Date },
+    cards: { type: [Schema.Types.Mixed], default: [] },
+    titles: { type: [Schema.Types.Mixed], default: [] },
+    lastGachaAt: { type: Date },
   },
   { timestamps: true, collection: 'users' },
 );

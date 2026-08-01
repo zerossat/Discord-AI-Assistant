@@ -51,7 +51,8 @@ export class MusicService {
     }
 
     // Auto-fetch SoundCloud client ID for fallback
-    play.getFreeClientID()
+    play
+      .getFreeClientID()
       .then((id) => {
         play.setToken({
           soundcloud: {
@@ -252,7 +253,10 @@ export class MusicService {
       } catch (streamErr) {
         // If it's a YouTube URL and we failed, try SoundCloud fallback
         if (nextSong.url.includes('youtube.com') || nextSong.url.includes('youtu.be')) {
-          this.logger?.warn({ song: nextSong.title, err: (streamErr as Error).message }, 'YouTube stream failed, trying SoundCloud fallback');
+          this.logger?.warn(
+            { song: nextSong.title, err: (streamErr as Error).message },
+            'YouTube stream failed, trying SoundCloud fallback',
+          );
           try {
             const scResults = await play.search(nextSong.title, {
               limit: 1,
@@ -261,7 +265,10 @@ export class MusicService {
             if (scResults.length > 0) {
               const scTrack = scResults[0] as any;
               stream = await play.stream(scTrack.url);
-              this.logger?.info({ song: nextSong.title }, 'Successfully fell back to SoundCloud stream');
+              this.logger?.info(
+                { song: nextSong.title },
+                'Successfully fell back to SoundCloud stream',
+              );
             } else {
               throw streamErr; // No SoundCloud result, throw original error
             }
@@ -381,13 +388,18 @@ export class MusicService {
           },
         ];
       } catch (err) {
-        this.logger?.warn({ err, searchQuery }, 'Spotify track search on YouTube failed, trying SoundCloud fallback');
+        this.logger?.warn(
+          { err, searchQuery },
+          'Spotify track search on YouTube failed, trying SoundCloud fallback',
+        );
         const scResults = await play.search(searchQuery, {
           limit: 1,
           source: { soundcloud: 'tracks' },
         });
         if (scResults.length === 0) {
-          throw new Error(`Không thể tìm thấy bài hát Spotify '${spTrack.name}' trên cả YouTube lẫn SoundCloud.`);
+          throw new Error(
+            `Không thể tìm thấy bài hát Spotify '${spTrack.name}' trên cả YouTube lẫn SoundCloud.`,
+          );
         }
         const track = scResults[0] as any;
         return [

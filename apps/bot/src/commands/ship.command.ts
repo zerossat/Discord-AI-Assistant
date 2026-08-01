@@ -40,9 +40,7 @@ export const shipCommand: Command = {
       o.setName('nguoi-ay').setDescription('Người muốn ghép đôi').setRequired(true),
     )
     .addUserOption((o) =>
-      o
-        .setName('nguoi-thu-2')
-        .setDescription('Người thứ 2 — để trống sẽ ghép với chính bạn'),
+      o.setName('nguoi-thu-2').setDescription('Người thứ 2 — để trống sẽ ghép với chính bạn'),
     ),
   async execute(interaction, services) {
     const first = interaction.options.getUser('nguoi-ay', true);
@@ -55,10 +53,15 @@ export const shipCommand: Command = {
     if (a.id === b.id) {
       const selfLovePct = 100;
       let selfLoveReading = 'Yêu bản thân là khởi đầu của một cuộc tình lãng mạn trọn đời! 💯✨';
-      
+
       try {
         const ctx = await buildChatContext(interaction, services);
-        selfLoveReading = await services.chat.ship(ctx, displayName(a), displayName(b), selfLovePct);
+        selfLoveReading = await services.chat.ship(
+          ctx,
+          displayName(a),
+          displayName(b),
+          selfLovePct,
+        );
       } catch (err) {
         log.warn({ err }, 'AI ship self-love reading failed');
       }

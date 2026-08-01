@@ -1,9 +1,4 @@
-import {
-  EmbedBuilder,
-  MessageFlags,
-  PermissionFlagsBits,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { EmbedBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { COMMAND_NAMES } from '@daa/shared';
 import type { Command } from './types';
 import type { GuildSettingsPatch } from '../database/repositories';
@@ -21,7 +16,10 @@ export const configCommand: Command = {
         .setName('set')
         .setDescription('Cập nhật cấu hình')
         .addStringOption((o) =>
-          o.setName('model').setDescription('AI model').addChoices(...MODEL_CHOICES),
+          o
+            .setName('model')
+            .setDescription('AI model')
+            .addChoices(...MODEL_CHOICES),
         )
         .addStringOption((o) =>
           o
@@ -32,8 +30,9 @@ export const configCommand: Command = {
         .addStringOption((o) =>
           o.setName('prefix').setDescription('Prefix lệnh (legacy)').setMaxLength(5),
         )
+        .addBooleanOption((o) => o.setName('memory').setDescription('Bật/tắt ghi nhớ hội thoại'))
         .addBooleanOption((o) =>
-          o.setName('memory').setDescription('Bật/tắt ghi nhớ hội thoại'),
+          o.setName('automod').setDescription('Bật/tắt AI Auto-Mod kiểm duyệt tin nhắn độc hại'),
         )
         .addIntegerOption((o) =>
           o
@@ -63,6 +62,7 @@ export const configCommand: Command = {
           { name: 'Ngôn ngữ', value: `\`${s.language}\``, inline: true },
           { name: 'Prefix', value: `\`${s.prefix}\``, inline: true },
           { name: 'Ghi nhớ', value: s.memoryEnabled ? '✅ Bật' : '❌ Tắt', inline: true },
+          { name: 'AI Auto-Mod', value: s.automodEnabled ? '🛡️ Bật' : '❌ Tắt', inline: true },
           { name: 'Summary limit', value: String(s.summaryMessageLimit), inline: true },
         );
       await interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
@@ -74,11 +74,13 @@ export const configCommand: Command = {
     const language = interaction.options.getString('language');
     const prefix = interaction.options.getString('prefix');
     const memory = interaction.options.getBoolean('memory');
+    const automod = interaction.options.getBoolean('automod');
     const summaryLimit = interaction.options.getInteger('summary-limit');
     if (model) patch.aiModel = model;
     if (language) patch.language = language;
     if (prefix) patch.prefix = prefix;
     if (memory !== null) patch.memoryEnabled = memory;
+    if (automod !== null) patch.automodEnabled = automod;
     if (summaryLimit !== null) patch.summaryMessageLimit = summaryLimit;
 
     if (Object.keys(patch).length === 0) {
@@ -97,6 +99,7 @@ export const configCommand: Command = {
         `• Ngôn ngữ: \`${updated.language}\`\n` +
         `• Prefix: \`${updated.prefix}\`\n` +
         `• Ghi nhớ: ${updated.memoryEnabled ? 'bật' : 'tắt'}\n` +
+        `• AI Auto-Mod: ${updated.automodEnabled ? 'bật' : 'tắt'}\n` +
         `• Summary limit: ${updated.summaryMessageLimit}`,
       flags: MessageFlags.Ephemeral,
     });

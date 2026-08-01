@@ -10,7 +10,7 @@ import { SettingsModel, type SettingsEntity } from '../models/settings.model';
 export type GuildSettingsPatch = Partial<
   Pick<
     GuildSettings,
-    'aiModel' | 'prefix' | 'language' | 'memoryEnabled' | 'summaryMessageLimit'
+    'aiModel' | 'prefix' | 'language' | 'memoryEnabled' | 'automodEnabled' | 'summaryMessageLimit'
   >
 >;
 
@@ -21,6 +21,7 @@ function toSettings(doc: SettingsEntity): GuildSettings {
     prefix: doc.prefix ?? DEFAULT_PREFIX,
     language: doc.language ?? DEFAULT_LANGUAGE,
     memoryEnabled: doc.memoryEnabled ?? true,
+    automodEnabled: doc.automodEnabled ?? false,
     summaryMessageLimit: doc.summaryMessageLimit ?? DEFAULT_SUMMARY_MESSAGE_LIMIT,
     updatedAt: doc.updatedAt?.toISOString() ?? new Date().toISOString(),
   };

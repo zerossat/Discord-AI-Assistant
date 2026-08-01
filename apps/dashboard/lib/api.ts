@@ -14,7 +14,8 @@ const BOT_API_URL = process.env.BOT_API_URL ?? 'http://localhost:4000';
 
 /** Mint a short-lived service token the bot API will accept (shared secret). */
 function serviceToken(): string {
-  const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'discord-ai-assistant-secret-key-2026';
+  const secret =
+    process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'discord-ai-assistant-secret-key-2026';
   return jwt.sign({ sub: 'dashboard', role: 'admin' }, secret, { expiresIn: '5m' });
 }
 

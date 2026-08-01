@@ -1,8 +1,5 @@
 import type { ConversationMessage } from '@daa/shared';
-import type {
-  ConversationRepository,
-  NewConversationMessage,
-} from '../database/repositories';
+import type { ConversationRepository, NewConversationMessage } from '../database/repositories';
 import type { CacheService } from './cache.service';
 import type { Logger } from '../utils/logger';
 

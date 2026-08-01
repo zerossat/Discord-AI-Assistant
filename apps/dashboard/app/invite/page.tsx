@@ -1,4 +1,14 @@
-import { Bot, MessageSquare, Code2, Globe, Music, Sparkles, Shield, Zap, ExternalLink } from 'lucide-react';
+import {
+  Bot,
+  MessageSquare,
+  Code2,
+  Globe,
+  Music,
+  Sparkles,
+  Shield,
+  Zap,
+  ExternalLink,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -66,7 +76,10 @@ export default function InvitePage() {
       {/* Nav */}
       <header className="relative z-10 border-b border-border/50 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-semibold transition-opacity hover:opacity-80">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-semibold transition-opacity hover:opacity-80"
+          >
             <Bot className="h-5 w-5 text-primary" />
             {appName}
           </Link>
@@ -169,9 +182,7 @@ export default function InvitePage() {
       {/* CTA */}
       <section className="relative z-10 border-t border-border/50">
         <div className="container flex flex-col items-center px-6 py-20 text-center">
-          <h2 className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">
-            Sẵn sàng bắt đầu?
-          </h2>
+          <h2 className="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">Sẵn sàng bắt đầu?</h2>
           <p className="mb-8 max-w-md text-muted-foreground">
             Chỉ cần một cú click để thêm bot vào server. Hoàn toàn miễn phí.
           </p>

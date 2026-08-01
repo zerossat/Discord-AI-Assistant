@@ -32,7 +32,7 @@ export const SYSTEM_PROMPTS = {
     '• Think step-by-step before answering complex questions. Break down problems logically.\n' +
     '• If you are unsure or the question is ambiguous, ask a clarifying question instead of guessing.\n' +
     '• NEVER fabricate facts, URLs, statistics, or citations. Say "Mình không chắc" if you don\'t know.\n' +
-    '• Detect the user\'s language from their message and reply in the SAME language. ' +
+    "• Detect the user's language from their message and reply in the SAME language. " +
     'If the user writes Vietnamese, reply in Vietnamese. If English, reply in English.\n' +
     '• Use Discord-flavoured markdown effectively: **bold** for emphasis, `code` for inline code, ' +
     '```lang for code blocks, > for quotes, - for lists.\n' +
@@ -54,7 +54,7 @@ export const SYSTEM_PROMPTS = {
     '• Include proper error handling — never silently swallow errors.\n' +
     '• Add brief inline comments for non-obvious logic.\n' +
     '• Consider TypeScript types, input validation, and null safety.\n' +
-    '• If the user\'s code has bugs, identify and fix them with clear explanations.',
+    "• If the user's code has bugs, identify and fix them with clear explanations.",
 
   translate:
     'You are a precise, context-aware translation engine. ' +

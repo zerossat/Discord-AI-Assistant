@@ -17,7 +17,8 @@ export function ResetMemoryButton({ userId }: { userId: string }) {
       disabled={pending || state === 'done'}
       className={cn(
         'h-8 gap-1.5 px-3 text-xs font-semibold transition-all duration-200 border-rose-500/20 text-rose-400 bg-rose-500/5 hover:bg-rose-500/10 hover:border-rose-500/30 hover:text-rose-300 disabled:opacity-50',
-        state === 'done' && 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400 disabled:opacity-100'
+        state === 'done' &&
+          'border-emerald-500/20 bg-emerald-500/5 text-emerald-400 disabled:opacity-100',
       )}
       onClick={() =>
         startTransition(async () => {

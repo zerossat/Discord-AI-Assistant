@@ -27,6 +27,61 @@ export interface UserPreferences {
   memoryEnabled: boolean;
 }
 
+/** AI Gacha Collectible Card. */
+export interface GachaCard {
+  id: string;
+  name: string;
+  rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary';
+  imageUrl: string;
+  atk: number;
+  def: number;
+  hp: number;
+  description: string;
+  createdAt: string;
+}
+
+/** Funny AI Title assigned to user. */
+export interface UserTitle {
+  id: string;
+  title: string;
+  icon: string;
+  reason: string;
+  awardedAt: string;
+}
+
+/** The Turing Project Chameleon Persona. */
+export interface TuringPersona {
+  name: string;
+  avatarUrl?: string;
+  personality: string;
+  backstory: string;
+  slangStyle: string;
+}
+
+/** Individual vote in Turing Court. */
+export interface TuringVote {
+  userId: string;
+  username: string;
+  choice: 'HUMAN' | 'AI';
+  votedAt: string;
+}
+
+/** Turing Game status per server. */
+export interface TuringGame {
+  guildId: string;
+  channelId?: string;
+  status: 'stealth' | 'court' | 'finished';
+  persona: TuringPersona;
+  isTargetAi: boolean; // true if suspect is AI Chameleon, false if a real human member!
+  targetUserId: string;
+  targetUsername: string;
+  suspicionCount: number;
+  suspectedBy: string[];
+  votes: TuringVote[];
+  courtExpiresAt?: string;
+  updatedAt: string;
+}
+
 /** Domain representation of a user (DB-agnostic). */
 export interface User {
   discordId: DiscordId;
@@ -34,6 +89,16 @@ export interface User {
   preferences: UserPreferences;
   /** Lifetime AI tokens attributed to this user. */
   totalTokens: number;
+  /** Experience points gained by user. */
+  xp?: number;
+  /** Current user level. */
+  level?: number;
+  /** Inventory of AI Gacha Cards. */
+  cards?: GachaCard[];
+  /** Awarded funny AI titles. */
+  titles?: UserTitle[];
+  /** ISO string of last gacha roll time. */
+  lastGachaAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -54,6 +119,8 @@ export interface GuildSettings {
   prefix: string;
   language: string;
   memoryEnabled: boolean;
+  /** Whether AI Auto-Mod is enabled for toxic message filter. */
+  automodEnabled?: boolean;
   /** How many messages `/summary` should fetch. */
   summaryMessageLimit: number;
   updatedAt: string;

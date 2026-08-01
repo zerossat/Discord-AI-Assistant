@@ -91,9 +91,7 @@ export default async function UsersPage() {
                 <tbody className="divide-y divide-white/5">
                   {users.map((u) => (
                     <tr key={u.discordId} className="group hover:bg-white/[0.01] transition-colors">
-                      <td className="py-4 px-6 font-bold text-white">
-                        {u.username}
-                      </td>
+                      <td className="py-4 px-6 font-bold text-white">{u.username}</td>
                       <td className="py-4 px-4">
                         <code className="rounded bg-white/5 border border-white/5 px-2 py-0.5 text-xs text-slate-400 font-mono">
                           {u.discordId}

@@ -122,12 +122,7 @@ export class ChatService {
   }
 
   /** `/ship` — luận giải tương thích đôi lứa vui vẻ. */
-  async ship(
-    ctx: ChatContext,
-    userA: string,
-    userB: string,
-    percent: number,
-  ): Promise<string> {
+  async ship(ctx: ChatContext, userA: string, userB: string, percent: number): Promise<string> {
     const prompt = `Luận giải ghép đôi tình cảm giữa ${userA} và ${userB} với số điểm hợp nhau là ${percent}%.`;
     const result = await this.gemini.generate(prompt, {
       model: ctx.model,
@@ -153,4 +148,3 @@ export class ChatService {
     return result.text;
   }
 }
-

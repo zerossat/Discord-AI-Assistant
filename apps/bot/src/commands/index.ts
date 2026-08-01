@@ -19,6 +19,14 @@ import { pauseCommand } from './pause.command';
 import { resumeCommand } from './resume.command';
 import { queueCommand } from './queue.command';
 import { quizCommand } from './quiz.command';
+import { imagineCommand } from './imagine.command';
+import { rankCommand } from './rank.command';
+import { leaderboardCommand } from './leaderboard.command';
+import { hackbotCommand } from './hackbot.command';
+import { guesspromptCommand } from './guessprompt.command';
+import { gachaCommand, cardsCommand } from './gacha.command';
+import { titlesCommand } from './titles.command';
+import { turingCommand } from './turing.command';
 
 /** Ordered list of all slash commands the bot exposes. */
 export const commands: Command[] = [
@@ -26,11 +34,21 @@ export const commands: Command[] = [
   codeCommand,
   summaryCommand,
   translateCommand,
+  imagineCommand,
   configCommand,
   statsCommand,
   resetMemoryCommand,
   tarotCommand,
   shipCommand,
+  quizCommand,
+  rankCommand,
+  leaderboardCommand,
+  hackbotCommand,
+  guesspromptCommand,
+  gachaCommand,
+  cardsCommand,
+  titlesCommand,
+  turingCommand,
   ttsCommand,
   leaveCommand,
   helpCommand,
@@ -41,7 +59,6 @@ export const commands: Command[] = [
   pauseCommand,
   resumeCommand,
   queueCommand,
-  quizCommand,
 ];
 
 /** Fast lookup by command name, used by the interaction handler. */

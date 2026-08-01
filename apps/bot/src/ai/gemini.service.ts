@@ -1,8 +1,4 @@
-import {
-  GoogleGenAI,
-  type Content,
-  type GenerateContentResponse,
-} from '@google/genai';
+import { GoogleGenAI, type Content, type GenerateContentResponse } from '@google/genai';
 import { estimateTokens, sleep, type AiGenerationResult, type ChatRole } from '@daa/shared';
 import type { Logger } from '../utils/logger';
 
@@ -172,10 +168,7 @@ export class GeminiService {
           }
 
           if (kind.rateLimited) {
-            this.logger?.warn(
-              { model, keyIndex },
-              'Gemini key rate-limited; trying next key',
-            );
+            this.logger?.warn({ model, keyIndex }, 'Gemini key rate-limited; trying next key');
             break; // move on to the next key
           }
 
@@ -198,8 +191,7 @@ export class GeminiService {
     const is429 =
       status === 429 ||
       /\b429\b|RESOURCE_EXHAUSTED|Too Many Requests|rate limit|quota/i.test(message);
-    const is503 =
-      status === 503 || /\b503\b|overloaded|UNAVAILABLE/i.test(message);
+    const is503 = status === 503 || /\b503\b|overloaded|UNAVAILABLE/i.test(message);
     const is404 =
       status === 404 ||
       /\b404\b|NOT_FOUND|not found|is not supported|not supported|deprecated|retired/i.test(

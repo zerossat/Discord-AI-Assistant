@@ -13,6 +13,14 @@ import { ChatService } from './chat.service';
 import { StatsService } from './stats.service';
 import { TtsService } from './tts.service';
 import { MusicService } from './music.service';
+import { AutoModService } from './automod.service';
+import { ImageService } from './image.service';
+import { HackBotService } from './hackbot.service';
+import { GuessPromptService } from './guessprompt.service';
+import { GachaService } from './gacha.service';
+import { TitlesService } from './titles.service';
+import { TuringService } from './turing.service';
+import { GameRepository, TuringRepository } from '../database/repositories';
 
 export { CacheService } from './cache.service';
 export { MemoryService, type MemoryServiceOptions } from './memory.service';
@@ -20,11 +28,24 @@ export { ChatService, type ChatContext } from './chat.service';
 export { StatsService } from './stats.service';
 export { TtsService } from './tts.service';
 export { MusicService } from './music.service';
+export { AutoModService, type AutoModResult } from './automod.service';
+export {
+  ImageService,
+  type ImageGenerationOptions,
+  type ImageGenerationResult,
+} from './image.service';
+export { HackBotService, type HackBotAttemptResult } from './hackbot.service';
+export { GuessPromptService, type GuessPromptResult } from './guessprompt.service';
+export { GachaService } from './gacha.service';
+export { TitlesService } from './titles.service';
+export { TuringService } from './turing.service';
 
 export interface Repositories {
   users: UserRepository;
   conversations: ConversationRepository;
   settings: SettingsRepository;
+  games: GameRepository;
+  turing: TuringRepository;
 }
 
 export interface ServiceContainer {
@@ -37,6 +58,13 @@ export interface ServiceContainer {
   stats: StatsService;
   tts: TtsService;
   music: MusicService;
+  automod: AutoModService;
+  image: ImageService;
+  hackbot: HackBotService;
+  guessprompt: GuessPromptService;
+  gacha: GachaService;
+  titles: TitlesService;
+  turing: TuringService;
 }
 
 /**
@@ -60,6 +88,8 @@ export function createServiceContainer(): ServiceContainer {
     users: new UserRepository(),
     conversations: new ConversationRepository(),
     settings: new SettingsRepository(),
+    games: new GameRepository(),
+    turing: new TuringRepository(),
   };
 
   const memory = new MemoryService(
@@ -76,6 +106,30 @@ export function createServiceContainer(): ServiceContainer {
   );
   const tts = new TtsService({ apiKeys: GEMINI_API_KEYS, logger });
   const music = new MusicService(logger);
+  const automod = new AutoModService(gemini);
+  const image = new ImageService(gemini);
+  const hackbot = new HackBotService(gemini, repositories.games);
+  const guessprompt = new GuessPromptService(image, repositories.games);
+  const gacha = new GachaService(image, repositories.users);
+  const titles = new TitlesService(gemini, repositories.users);
+  const turing = new TuringService(gemini, repositories.turing, repositories.users);
 
-  return { redis, cache, gemini, repositories, memory, chat, stats, tts, music };
+  return {
+    redis,
+    cache,
+    gemini,
+    repositories,
+    memory,
+    chat,
+    stats,
+    tts,
+    music,
+    automod,
+    image,
+    hackbot,
+    guessprompt,
+    gacha,
+    titles,
+    turing,
+  };
 }

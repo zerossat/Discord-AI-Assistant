@@ -6,13 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2, Check, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function DeleteConversationButton({
-  userId,
-  guildId,
-}: {
-  userId: string;
-  guildId: string;
-}) {
+export function DeleteConversationButton({ userId, guildId }: { userId: string; guildId: string }) {
   const [pending, startTransition] = useTransition();
   const [done, setDone] = useState(false);
 
@@ -24,7 +18,7 @@ export function DeleteConversationButton({
       disabled={pending || done}
       className={cn(
         'h-8 gap-1.5 px-3 text-xs font-semibold transition-all duration-200 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 disabled:opacity-50',
-        done && 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent disabled:opacity-100'
+        done && 'text-emerald-400 hover:text-emerald-400 hover:bg-transparent disabled:opacity-100',
       )}
       onClick={() =>
         startTransition(async () => {

@@ -14,9 +14,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
  */
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  LOG_LEVEL: z
-    .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace'])
-    .default('info'),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 
   // Discord
   DISCORD_TOKEN: z.string().default(process.env.DISCORD_TOKEN || ''),
@@ -35,7 +33,9 @@ const envSchema = z.object({
     .default('gemini-2.5-flash-lite,gemini-2.0-flash,gemini-1.5-flash'),
 
   // Data stores
-  MONGODB_URI: z.string().default(process.env.MONGODB_URI || 'mongodb://localhost:27017/discord-bot'),
+  MONGODB_URI: z
+    .string()
+    .default(process.env.MONGODB_URI || 'mongodb://localhost:27017/discord-bot'),
   REDIS_URL: z.string().default(process.env.REDIS_URL || 'redis://localhost:6379'),
 
   // HTTP API
@@ -43,10 +43,12 @@ const envSchema = z.object({
     process.env.BOT_API_PORT
       ? Number(process.env.BOT_API_PORT)
       : process.env.API_PORT
-      ? Number(process.env.API_PORT)
-      : 4000,
+        ? Number(process.env.API_PORT)
+        : 4000,
   ),
-  JWT_SECRET: z.string().default(process.env.JWT_SECRET || 'discord_ai_assistant_fallback_secret_32bytes'),
+  JWT_SECRET: z
+    .string()
+    .default(process.env.JWT_SECRET || 'discord_ai_assistant_fallback_secret_32bytes'),
 
   // Memory
   MEMORY_MAX_MESSAGES: z.coerce.number().int().min(1).max(100).default(20),

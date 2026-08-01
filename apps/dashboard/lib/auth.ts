@@ -14,7 +14,8 @@ export const authOptions: NextAuthOptions = {
       authorization: { params: { scope: 'identify email guilds' } },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET || 'discord-ai-assistant-secret-key-2026',
+  secret:
+    process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET || 'discord-ai-assistant-secret-key-2026',
   session: { strategy: 'jwt' },
   callbacks: {
     jwt({ token, profile }) {

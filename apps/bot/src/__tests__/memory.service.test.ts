@@ -2,10 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ConversationMessage } from '@daa/shared';
 import { MemoryService } from '../services/memory.service';
 import type { CacheService } from '../services/cache.service';
-import type {
-  ConversationRepository,
-  NewConversationMessage,
-} from '../database/repositories';
+import type { ConversationRepository, NewConversationMessage } from '../database/repositories';
 
 function createFakeCache() {
   const store = new Map<string, string>();
@@ -34,12 +31,7 @@ function createFakeConversations() {
       (store.get(k(u, g)) ?? []).slice(-limit),
     ),
     appendMessages: vi.fn(
-      async (
-        u: string,
-        g: string | null,
-        msgs: NewConversationMessage[],
-        max: number,
-      ) => {
+      async (u: string, g: string | null, msgs: NewConversationMessage[], max: number) => {
         const current = store.get(k(u, g)) ?? [];
         const next = [
           ...current,

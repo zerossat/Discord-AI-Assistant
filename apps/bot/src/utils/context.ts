@@ -18,15 +18,16 @@ export async function buildChatContext(
   return {
     userId: interaction.user.id,
     username: interaction.user.username,
-    displayName: interaction.member && 'displayName' in interaction.member
-      ? (interaction.member.displayName as string)
-      : interaction.user.displayName,
+    displayName:
+      interaction.member && 'displayName' in interaction.member
+        ? (interaction.member.displayName as string)
+        : interaction.user.displayName,
     guildId,
     guildName: interaction.guild?.name ?? undefined,
-    channelName: interaction.channel && 'name' in interaction.channel
-      ? (interaction.channel.name as string)
-      : undefined,
+    channelName:
+      interaction.channel && 'name' in interaction.channel
+        ? (interaction.channel.name as string)
+        : undefined,
     model,
   };
 }
-

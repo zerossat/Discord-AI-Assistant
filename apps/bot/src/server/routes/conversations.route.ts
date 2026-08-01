@@ -41,7 +41,10 @@ export function conversationsRouter(services: ServiceContainer): Router {
       res.status(400).json({ error: 'userId and guildId are required' });
       return;
     }
-    const conversation = await services.repositories.conversations.get(userId, decodeGuild(guildId));
+    const conversation = await services.repositories.conversations.get(
+      userId,
+      decodeGuild(guildId),
+    );
     if (!conversation) {
       res.status(404).json({ error: 'Not found' });
       return;

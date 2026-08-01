@@ -17,9 +17,7 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
           const focusedOption = interaction.options.getFocused(true);
           if (focusedOption.name === 'model') {
             const query = focusedOption.value.toLowerCase().trim();
-            const filtered = SUPPORTED_AI_MODELS.filter((m) =>
-              m.toLowerCase().includes(query),
-            )
+            const filtered = SUPPORTED_AI_MODELS.filter((m) => m.toLowerCase().includes(query))
               .slice(0, 25)
               .map((m) => ({ name: m, value: m }));
             await interaction.respond(filtered);
@@ -56,15 +54,6 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
 
     if (!interaction.isChatInputCommand()) return;
 
-    // Fast-path: Defer reply immediately (<20ms) so Discord never shows timeout errors!
-    try {
-      if (!interaction.deferred && !interaction.replied) {
-        await interaction.deferReply();
-      }
-    } catch (err) {
-      log.error({ err }, 'failed to defer reply');
-    }
-
     const commandName = interaction.commandName.toLowerCase().trim();
     const command = commandMap.get(commandName) || commandMap.get(interaction.commandName);
 
@@ -75,7 +64,14 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
       );
       try {
         if (interaction.deferred || interaction.replied) {
-          await interaction.editReply(`⚠️ Lệnh \`/${interaction.commandName}\` không được tìm thấy.`);
+          await interaction.editReply(
+            `⚠️ Lệnh \`/${interaction.commandName}\` không được tìm thấy.`,
+          );
+        } else {
+          await interaction.reply({
+            content: `⚠️ Lệnh \`/${interaction.commandName}\` không được tìm thấy.`,
+            flags: MessageFlags.Ephemeral,
+          });
         }
       } catch {
         // Ignore
@@ -97,15 +93,6 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
         }
       } catch (replyErr) {
         log.error({ err: replyErr }, 'failed to send error reply');
-      }
-    } finally {
-      // Guaranteed safety net: Edit deferred reply if execution completed without replying
-      if (interaction.deferred && !interaction.replied) {
-        try {
-          await interaction.editReply('✅ Lệnh đã hoàn tất.');
-        } catch {
-          // Ignore
-        }
       }
     }
   });

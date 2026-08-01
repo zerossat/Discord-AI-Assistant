@@ -6,7 +6,12 @@ import { logger } from './utils/logger';
 import { connectMongo, disconnectMongo } from './database/connection';
 import { createServiceContainer } from './services';
 import { createDiscordClient } from './discord/client';
-import { registerInteractionCreate, registerReady, registerVoiceStateUpdate, registerMessageCreate } from './events';
+import {
+  registerInteractionCreate,
+  registerReady,
+  registerVoiceStateUpdate,
+  registerMessageCreate,
+} from './events';
 import { createApp } from './server/app';
 
 async function bootstrap(): Promise<void> {
@@ -34,7 +39,10 @@ async function bootstrap(): Promise<void> {
         .catch((err) => logger.warn({ err }, 'Background slash command deploy failed'));
     }
   } catch (err) {
-    logger.error({ err }, '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.');
+    logger.error(
+      { err },
+      '❌ Failed to log into Discord! Please check DISCORD_TOKEN in Railway Variables.',
+    );
   }
 
   // 4. Connect to MongoDB in background without blocking Discord readiness

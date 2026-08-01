@@ -12,6 +12,7 @@ export interface SettingsEntity {
   prefix: string;
   language: string;
   memoryEnabled: boolean;
+  automodEnabled: boolean;
   summaryMessageLimit: number;
   createdAt: Date;
   updatedAt: Date;
@@ -24,6 +25,7 @@ const settingsSchema = new Schema<SettingsEntity>(
     prefix: { type: String, default: DEFAULT_PREFIX },
     language: { type: String, default: DEFAULT_LANGUAGE },
     memoryEnabled: { type: Boolean, default: true },
+    automodEnabled: { type: Boolean, default: false },
     summaryMessageLimit: { type: Number, default: DEFAULT_SUMMARY_MESSAGE_LIMIT },
   },
   { timestamps: true, collection: 'settings' },

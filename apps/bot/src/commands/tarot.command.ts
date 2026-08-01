@@ -32,7 +32,11 @@ const TAROT_SPREADS: Record<string, TarotSpread> = {
   '3_tinh_duyen': {
     name: '3 lá — Tình duyên / Mối quan hệ',
     description: 'Khám phá tình cảm của bạn, đối phương và chiều hướng kết nối.',
-    positions: ['Bạn trong mối quan hệ', 'Đối phương / Năng lượng chung', 'Tương lai của hai người'],
+    positions: [
+      'Bạn trong mối quan hệ',
+      'Đối phương / Năng lượng chung',
+      'Tương lai của hai người',
+    ],
   },
   '3_lua_chon': {
     name: '3 lá — Quyết định khó khăn',
@@ -58,17 +62,14 @@ export const tarotCommand: Command = {
         ),
     )
     .addStringOption((o) =>
-      o
-        .setName('cau-hoi')
-        .setDescription('Điều bạn muốn hỏi (không bắt buộc)')
-        .setMaxLength(300),
+      o.setName('cau-hoi').setDescription('Điều bạn muốn hỏi (không bắt buộc)').setMaxLength(300),
     ),
   async execute(interaction, services) {
     await interaction.deferReply();
 
     const spreadKey = interaction.options.getString('kieu-boi') ?? '1_la';
     const question = interaction.options.getString('cau-hoi');
-    
+
     const spread = TAROT_SPREADS[spreadKey] ?? TAROT_SPREADS['1_la']!;
     const drawn = drawCards(spread.positions.length);
 
@@ -76,7 +77,7 @@ export const tarotCommand: Command = {
     if (question?.trim()) lines.push(`**Câu hỏi:** ${question.trim()}`, '');
     lines.push(`🌌 **Kiểu trải bài:** *${spread.name}*`, `> *${spread.description}*`, '');
     lines.push('🃏 **Lá bài rút được:**');
-    
+
     const spreadForAi: string[] = [];
     drawn.forEach((d, i) => {
       const orient = d.reversed ? 'Ngược 🔻' : 'Xuôi 🔺';
@@ -84,7 +85,9 @@ export const tarotCommand: Command = {
       const pos = spread.positions[i]!;
       lines.push(`**${pos}** — ${d.card.emoji} ${d.card.vi} *(${d.card.en})* · ${orient}`);
       lines.push(`> *Ý nghĩa: ${meaning}*`);
-      spreadForAi.push(`Vị trí "${pos}": Lá ${d.card.vi} (${d.card.en}) - Hướng ${orient} - Ý nghĩa cốt lõi: ${meaning}`);
+      spreadForAi.push(
+        `Vị trí "${pos}": Lá ${d.card.vi} (${d.card.en}) - Hướng ${orient} - Ý nghĩa cốt lõi: ${meaning}`,
+      );
     });
 
     // AI luận giải; degrade nhẹ nếu lỗi (vd: hết quota) — vẫn hiển thị lá bài.

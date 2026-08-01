@@ -16,8 +16,5 @@ export interface SlashCommandData {
 
 export interface Command {
   data: SlashCommandData;
-  execute: (
-    interaction: ChatInputCommandInteraction,
-    services: ServiceContainer,
-  ) => Promise<void>;
+  execute: (interaction: ChatInputCommandInteraction, services: ServiceContainer) => Promise<void>;
 }

@@ -19,15 +19,15 @@ export const queueCommand: Command = {
       return;
     }
 
-    const embed = new EmbedBuilder()
-      .setTitle('📋 Danh sách nhạc chờ phát')
-      .setColor(0x5865f2);
+    const embed = new EmbedBuilder().setTitle('📋 Danh sách nhạc chờ phát').setColor(0x5865f2);
 
     const description: string[] = [];
 
     if (session.currentSong) {
       description.push(`**Đang phát:**`);
-      description.push(`🎵 **[${session.currentSong.title}](${session.currentSong.url})** | \`${session.currentSong.duration}\` (Yêu cầu bởi: \`${session.currentSong.requester}\`)`);
+      description.push(
+        `🎵 **[${session.currentSong.title}](${session.currentSong.url})** | \`${session.currentSong.duration}\` (Yêu cầu bởi: \`${session.currentSong.requester}\`)`,
+      );
       description.push('');
     }
 

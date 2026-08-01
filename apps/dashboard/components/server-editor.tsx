@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Cpu, Globe, Key, Brain, ListCollapse, Users } from 'lucide-react';
 
-const fieldInput = 'mt-1.5 w-full rounded-lg border border-white/5 bg-white/[0.02] px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all disabled:opacity-50';
+const fieldInput =
+  'mt-1.5 w-full rounded-lg border border-white/5 bg-white/[0.02] px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all disabled:opacity-50';
 
 export function ServerEditor({ guild, editable }: { guild: GuildSummary; editable: boolean }) {
   const [aiModel, setAiModel] = useState(guild.aiModel);

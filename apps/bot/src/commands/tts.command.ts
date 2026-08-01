@@ -19,11 +19,7 @@ export const ttsCommand: Command = {
     .setDescription('🔊 Chuyển văn bản thành giọng nói trong kênh thoại')
     .setDMPermission(false)
     .addStringOption((o) =>
-      o
-        .setName('noi-dung')
-        .setDescription('Văn bản cần đọc')
-        .setRequired(true)
-        .setMaxLength(600),
+      o.setName('noi-dung').setDescription('Văn bản cần đọc').setRequired(true).setMaxLength(600),
     )
     .addStringOption((o) =>
       o
@@ -50,14 +46,18 @@ export const ttsCommand: Command = {
 
     await interaction.deferReply();
 
-    const speakerName = member?.displayName ?? interaction.user.displayName ?? interaction.user.username;
+    const speakerName =
+      member?.displayName ?? interaction.user.displayName ?? interaction.user.username;
     const spokenText = `${speakerName} đã nói: ${text}`;
 
     // 1) Tạo audio. Nếu chọn Gemini mà lỗi (vd: hết quota) → tự chuyển sang Google.
     let audio: TtsResult;
     let usedVoice = engine === 'gemini' ? 'Gemini' : 'Google';
     try {
-      audio = engine === 'gemini' ? await services.tts.gemini(spokenText) : await services.tts.google(spokenText);
+      audio =
+        engine === 'gemini'
+          ? await services.tts.gemini(spokenText)
+          : await services.tts.google(spokenText);
     } catch (err) {
       if (engine === 'gemini') {
         log.warn({ err }, 'Gemini TTS lỗi — chuyển sang Google');
@@ -84,7 +84,9 @@ export const ttsCommand: Command = {
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
       .setTitle('🔊 Text-to-Speech')
-      .setDescription(`📢 **${speakerName}** đã nói: **${text.slice(0, 500)}**\n\n${status}\n\n**Giọng:** ${usedVoice}`);
+      .setDescription(
+        `📢 **${speakerName}** đã nói: **${text.slice(0, 500)}**\n\n${status}\n\n**Giọng:** ${usedVoice}`,
+      );
 
     if (spoke) {
       await interaction.editReply({ embeds: [embed] });

@@ -3,13 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import {
-  LayoutDashboard,
-  Server,
-  Users,
-  MessagesSquare,
-  Activity,
-} from 'lucide-react';
+import { LayoutDashboard, Server, Users, MessagesSquare, Activity } from 'lucide-react';
 
 const LINKS = [
   { href: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
