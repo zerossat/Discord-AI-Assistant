@@ -40,8 +40,8 @@ const envSchema = z.object({
 
   // HTTP API
   API_PORT: portString.default(
-    process.env.PORT
-      ? Number(process.env.PORT)
+    process.env.BOT_API_PORT
+      ? Number(process.env.BOT_API_PORT)
       : process.env.API_PORT
       ? Number(process.env.API_PORT)
       : 4000,

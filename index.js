@@ -8,19 +8,24 @@ const sourceBotPath = path.join(__dirname, 'apps', 'bot', 'src', 'index.ts');
 const children = [];
 
 function spawnBot() {
+  const botEnv = {
+    ...process.env,
+    API_PORT: process.env.BOT_API_PORT || process.env.API_PORT || '4000',
+  };
+
   if (fs.existsSync(builtBotPath)) {
     console.log('🤖 Khởi động Bot đã build (Production)...');
     return spawn('node', [builtBotPath], {
       stdio: 'inherit',
       cwd: __dirname,
-      env: process.env,
+      env: botEnv,
     });
   } else {
     console.log('🤖 Khởi động Bot từ nguồn TypeScript (Direct)...');
     return spawn('npx', ['tsx', sourceBotPath], {
       stdio: 'inherit',
       cwd: __dirname,
-      env: process.env,
+      env: botEnv,
     });
   }
 }
