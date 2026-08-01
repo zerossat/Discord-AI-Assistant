@@ -22,20 +22,29 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
     const content = message.content.trim();
     const lowerContent = content.toLowerCase();
 
-    // Kiểm tra xem tin nhắn có bắt đầu bằng từ khóa "tts" không
-    if (!lowerContent.startsWith('tts')) return;
+    // Hỗ trợ các từ khóa đọc TTS trực tiếp trong chat: "say", "tts", "nói"
+    const triggers = ['say', 'tts', 'nói'];
+    let matchedTrigger: string | null = null;
 
-    // Đảm bảo từ khóa là "tts" độc lập (ví dụ: "tts hello" chứ không phải "ttshere")
-    const nextChar = content.charAt(3);
-    if (nextChar !== '' && nextChar !== ' ' && nextChar !== '\n') return;
+    for (const trigger of triggers) {
+      if (lowerContent.startsWith(trigger)) {
+        const nextChar = content.charAt(trigger.length);
+        if (nextChar === '' || nextChar === ' ' || nextChar === '\n') {
+          matchedTrigger = trigger;
+          break;
+        }
+      }
+    }
 
-    let rawText = content.slice(3).trim();
+    if (!matchedTrigger) return;
+
+    let rawText = content.slice(matchedTrigger.length).trim();
     if (!rawText) {
-      await message.reply('🔇 Vui lòng nhập nội dung cần đọc sau từ khoá `tts` (Ví dụ: `tts Xin chào`).');
+      await message.reply(`... Vui lòng nhập nội dung cần đọc sau từ khoá \`${matchedTrigger}\` (Ví dụ: \`${matchedTrigger} Maly xin mẫu nơ với\`).`);
       return;
     }
 
-    // Hỗ trợ chọn engine bằng cách gõ: "tts gemini nội dung cần đọc"
+    // Hỗ trợ chọn engine bằng cách gõ: "say gemini nội dung cần đọc" hoặc "tts gemini ..."
     let engine = 'google';
     if (rawText.toLowerCase().startsWith('gemini ')) {
       engine = 'gemini';
@@ -43,14 +52,14 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
     }
 
     if (!rawText) {
-      await message.reply('🔇 Vui lòng nhập nội dung cần đọc sau từ khoá `tts gemini`.');
+      await message.reply(`... Vui lòng nhập nội dung cần đọc sau từ khoá \`${matchedTrigger} gemini\`.`);
       return;
     }
 
     const member = message.member instanceof GuildMember ? message.member : null;
     const channel = member?.voice.channel ?? null;
     if (!message.guild || !channel) {
-      await message.reply('🔇 Bạn cần vào một **kênh thoại** trước khi dùng lệnh `tts` nhé.');
+      await message.reply('... Bạn cần vào một **kênh thoại** trước khi dùng lệnh đọc TTS nhé.');
       return;
     }
 
@@ -87,14 +96,14 @@ export function registerMessageCreate(client: Client, services: ServiceContainer
       log.warn({ err }, 'không phát được trong kênh thoại');
     }
 
-    // Nếu phát thành công trong kênh thoại, phản hồi tin nhắn như ảnh mẫu
+    // Phản hồi tin nhắn khớp hoàn toàn mẫu ảnh: 📢 <Tên_Người_Dùng> đã nói: **<Nội_dung>**
     if (spoke) {
-      await message.reply(`📢 **${speakerName}** đã nói: **${rawText}**`);
+      await message.reply(`📢 ${speakerName} đã nói: **${rawText}**`);
     } else {
       // Nếu không vào được kênh thoại, gửi file đính kèm làm phương án dự phòng
       const attachment = new AttachmentBuilder(audio.buffer, { name: `tts.${audio.ext}` });
       await message.reply({
-        content: `📢 **${speakerName}** đã nói: **${rawText}**\n⚠️ Không vào được kênh thoại (kiểm tra quyền **Connect/Speak** của bot). Đính kèm file âm thanh để bạn nghe tạm.`,
+        content: `📢 ${speakerName} đã nói: **${rawText}**\n⚠️ Không vào được kênh thoại (kiểm tra quyền **Connect/Speak** của bot). Đính kèm file âm thanh để bạn nghe tạm.`,
         files: [attachment],
       });
     }
