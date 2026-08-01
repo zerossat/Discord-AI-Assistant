@@ -1,202 +1,189 @@
-# Discord AI Assistant
+# 🤖 Discord AI Assistant
 
-A modern, full-stack **Discord AI Assistant** built with TypeScript: a Discord.js v14 bot powered by the **Google Gemini API**, plus a **Next.js 15** admin dashboard. Monorepo managed with **pnpm + Turborepo**.
+Modern, full-stack **Discord AI Assistant** — Một Discord Bot siêu thông minh (built with **Discord.js v14** & **Google Gemini API**) tích hợp **Next.js 15 Admin Dashboard**, trình phát nhạc, game AI giải trí, hệ thống Leveling/XP và AI Auto-Mod kiểm duyệt tự động.
 
-> Chat with AI · conversation memory · coding help · message summaries · translation · basic server management · admin dashboard.
+Monorepo quản lý bởi **pnpm Workspaces + Turborepo**.
 
 ---
 
-## ✨ Features
+## ✨ Features (Tính năng nổi bật)
 
-| Command | Description |
-| --- | --- |
-| `/ask <question>` | Context-aware chat with Gemini (uses conversation memory). |
-| `/code <prompt>` | Generates code with an explanation and best practices. |
-| `/summary [limit]` | Summarises the last N messages in the channel (≤100). |
-| `/translate <to> <text> [from]` | Translates text between languages. |
-| `/config view\|set` | View/update per-guild settings (admin — `Manage Server`). |
-| `/stats` | Bot-wide usage statistics. |
-| `/reset-memory` | Clears your conversation memory in the current context. |
-| `/tarot [so-la] [cau-hoi]` | Draws 1 or 3 tarot cards and gives an AI reading (with built-in card meanings). |
-| `/ship <nguoi-ay> [nguoi-thu-2]` | Fun compatibility % between two people (stable per pair, offline). |
-| `/tts <noi-dung> [giong]` | Speaks text in your voice channel (Google or Gemini voice); stays until the channel empties. |
-| `/leave` | Makes the bot leave the voice channel. |
-| `/help` | Lists every command grouped by category. |
-| `/menu` | Interactive command menu (pick a category from a dropdown). |
+### 🤖 1. AI Chat & Trợ lý thông minh
+| Lệnh | Mô tả |
+| :--- | :--- |
+| `/ask <question> [file]` | Trò chuyện ngữ cảnh liên tục với AI Gemini (hỗ trợ đọc & phân tích đính kèm PDF, TXT, CSV, JSON, Code). |
+| `/imagine <prompt> [style]` | Sáng tạo hình ảnh nghệ thuật AI độ phân giải cao từ mô tả văn bản (Cyberpunk, Anime, Realistic,...). |
+| `/code <prompt>` | Sinh mã nguồn lập trình chuẩn mực kèm giải thích chi tiết & Best Practices. |
+| `/summary [limit]` | Tóm tắt các tin nhắn gần đây trong kênh chat (10–100 tin). |
+| `/translate <to> <text> [from]` | Dịch thuật đa ngôn ngữ theo thời gian thực. |
+| `/reset-memory` | Xóa bộ nhớ ngữ cảnh trò chuyện hiện tại. |
 
-- **Memory system** — a Redis-cached, MongoDB-backed sliding window of recent messages per `(user, guild)`.
-- **Dashboard** — Discord OAuth2 login (NextAuth), usage stats, total AI tokens, server list.
-- **HTTP API** — Express + **Swagger** docs at `/api/docs`.
+---
 
-## 🧱 Tech stack
+### 🎮 2. Trò chơi AI & Giải trí (Game AI & Gamification)
+| Lệnh | Mô tả |
+| :--- | :--- |
+| `/hackbot start\|guess\|hint\|stop` | **Hack the Bot**: Thử thách Prompt Injection đánh lừa AI tiết lộ mật khẩu két sắt bí mật. |
+| `/guessprompt start\|guess\|hint\|stop` | **Đoán Prompt Ảnh AI**: AI tạo 1 bức ảnh ẩn, thành viên nhìn ảnh đoán từ khóa gốc. |
+| `/gacha` | **Thẻ Bài Gacha AI**: Điểm danh hằng ngày nhận thẻ bài nhân vật AI độc bản (Common, Rare, Epic, Legendary) kèm chỉ số ATK/DEF/HP. |
+| `/cards [user]` | **Kho Thẻ Bài**: Xem bộ sưu tập thẻ bài AI Gacha sở hữu. |
+| `/titles view\|claim` | **Danh Hiệu Hài Hước**: AI tự đọc thói quen nhắn tin và sắc phong danh hiệu vui nhộn độc quyền. |
+| `/quiz start\|hint\|answer\|skip` | **Đuổi Hình Bắt Chữ**: Trò chơi đố vui tương tác nút bấm và gợi ý thời gian thực. |
+| `/tarot [số lá] [câu hỏi]` | **Bói Bài Tarot**: Rút 1 hoặc 3 lá bài Tarot và nhờ AI giải đoán thông điệp. |
+| `/ship <người 1> [người 2]` | **Bói Hợp Đôi**: Đo độ hợp % giữa hai người chơi kèm nhận xét hài hước. |
 
-- **Bot:** Node.js, TypeScript, Discord.js v14, Express, Mongoose (MongoDB), ioredis (Redis), `@google/genai`, Zod, Pino, Swagger.
-- **Dashboard:** Next.js 15 (App Router), TailwindCSS, shadcn-style UI, NextAuth (Discord).
-- **Shared:** `@daa/shared` package with domain types, constants and Zod helpers.
-- **Tooling:** pnpm workspaces, Turborepo, ESLint, Prettier, Vitest, Docker, GitHub Actions.
+---
 
-## 📁 Monorepo layout
+### 🏆 3. Cấp độ (Leveling / XP) & Bảng xếp hạng
+| Lệnh | Mô tả |
+| :--- | :--- |
+| `/rank [user]` | Hiển thị Thẻ Cấp độ (Level), điểm XP tích lũy và thanh tiến trình ASCII `[████████░░░░]`. |
+| `/leaderboard` | Bảng xếp hạng Top 10 cao thủ có XP cao nhất server. |
+
+---
+
+### 🔊 4. Âm thanh & Phát nhạc (Voice & Music)
+| Lệnh | Mô tả |
+| :--- | :--- |
+| `/play <truy vấn/URL>` | Phát nhạc chất lượng cao từ YouTube / SoundCloud / Spotify. |
+| `/pause` / `/resume` | Tạm dừng hoặc tiếp tục phát nhạc. |
+| `/skip` / `/stop` / `/queue` | Bỏ qua bài hát, dừng phát & xóa hàng chờ nhạc. |
+| `/tts <nội dung> [giọng]` | Đọc văn bản thành giọng nói trong Voice Channel (Google TTS / Gemini Audio). |
+| `/leave` | Cho bot rời khỏi kênh thoại. |
+
+---
+
+### 🛡️ 5. Quản trị Server & Kiểm duyệt tự động (AI Auto-Mod)
+| Lệnh | Mô tả |
+| :--- | :--- |
+| `/config view\|set` | Xem và điều chỉnh cấu hình Server (AI Model, System Prompt, Bật/tắt AI Auto-Mod, Prefix). |
+| `/stats` | Thống kê số lượng Token AI tiêu thụ và quy mô hoạt động của bot. |
+| `/help` / `/menu` | Danh sách hướng dẫn toàn bộ câu lệnh & Menu tương tác theo nhóm. |
+
+---
+
+## 🧱 Tech Stack
+
+- **Bot & API Server:** Node.js, TypeScript, Discord.js v14, `@discordjs/voice`, Express, Mongoose (MongoDB), ioredis (Redis), `@google/genai`, Zod, Pino, Swagger.
+- **Dashboard Admin:** Next.js 15 (App Router), TailwindCSS, shadcn-style UI, NextAuth.js (Discord OAuth2).
+- **Shared Core:** `@daa/shared` package chứa Domain Types, Zod Schemas & Constants.
+- **Tooling & Cloud:** pnpm workspaces, Turborepo, Docker, Railway, GitHub Actions CI/CD.
+
+---
+
+## 📁 Monorepo Layout
 
 ```
 discord-ai-assistant/
 ├── apps/
-│   ├── bot/                 # Discord bot + Express API (Swagger)
+│   ├── bot/                 # Discord Bot + Express REST API (Swagger)
 │   │   └── src/
-│   │       ├── ai/          # Gemini service + prompt builders
-│   │       ├── commands/    # Slash commands
+│   │       ├── ai/          # Gemini service, prompts & tarot data
+│   │       ├── commands/    # Slash commands (/ask, /imagine, /hackbot, /gacha, /rank,...)
 │   │       ├── config/      # Zod-validated env
 │   │       ├── database/    # Mongoose models + repositories + seed
-│   │       ├── discord/     # Gateway client
-│   │       ├── events/      # ready / interactionCreate
-│   │       ├── server/      # Express app, routes, Swagger, auth
-│   │       ├── services/    # chat / memory / stats / cache (+ DI container)
-│   │       ├── utils/       # logger, reply helpers
-│   │       └── index.ts     # bootstrap
-│   └── dashboard/           # Next.js 15 admin dashboard
-│       ├── app/             # routes (App Router)
+│   │       ├── discord/     # Discord Gateway Client
+│   │       ├── events/      # InteractionCreate & MessageCreate (XP & Auto-Mod)
+│   │       ├── server/      # Express API Server, Swagger UI, Auth middleware
+│   │       ├── services/    # Chat, Memory, AutoMod, Image, HackBot, Gacha, Titles services
+│   │       └── index.ts     # Bootstrap entry point
+│   └── dashboard/           # Next.js 15 Admin Web Dashboard
+│       ├── app/             # App Router pages (Servers, Conversations, Status, Users)
 │       ├── components/      # UI components
-│       └── lib/             # auth, bot-API client, utils
+│       └── lib/             # Auth, Bot API client
 ├── packages/
-│   └── shared/              # @daa/shared — types, constants, zod helpers
-├── docker/                  # mongo init script
-├── docs/                    # architecture & API docs
-├── .github/workflows/       # CI
-├── docker-compose.yml
-└── .env.example
+│   └── shared/              # @daa/shared — Types, Constants & Zod helpers
+├── docker/                  # MongoDB init script
+├── docs/                    # Architecture & API documentation
+├── railway.json             # Railway Deployment Config
+├── Dockerfile               # Production Dockerfile
+└── docker-compose.yml       # Local multi-container compose
 ```
 
-## ✅ Prerequisites
+---
 
-- **Node.js ≥ 20** and **pnpm 9** (`corepack enable` then `corepack prepare pnpm@9 --activate`).
-- A **Discord application + bot** — https://discord.com/developers/applications
-  - Copy the **bot token**, **client ID**, and OAuth2 **client secret**.
-  - Under **Bot → Privileged Gateway Intents**, enable **Message Content Intent** (required by `/summary`).
-  - Add an OAuth2 redirect URL: `http://localhost:3000/api/auth/callback/discord`.
-- A **Gemini API key** — https://ai.google.dev
-- For local (non-Docker) runs: a **MongoDB** and **Redis** instance (or just use Docker for those).
+## 🔐 Biến Môi Trường (Environment Variables)
 
-## 🚀 Quick start (Docker)
+| Variable | App | Mô tả |
+| :--- | :--- | :--- |
+| `DISCORD_TOKEN` | bot | Bot Token lấy từ Discord Developer Portal. |
+| `DISCORD_CLIENT_ID` | bot | Application Client ID — dùng đăng ký Slash Commands. |
+| `DISCORD_CLIENT_SECRET` | dashboard | OAuth2 Client Secret. |
+| `DISCORD_DEV_GUILD_ID` | bot | *(Tùy chọn)* ID Server thử nghiệm để cập nhật lệnh tức thì. |
+| `GEMINI_API_KEY` / `GEMINI_API_KEYS` | bot | API Key Gemini (hỗ trợ danh sách phân cách bởi dấu phẩy để xoay vòng khi 429). |
+| `GEMINI_MODEL` | bot | Model AI mặc định (ví dụ: `gemini-2.5-flash`). |
+| `MONGODB_URI` | bot | Chuỗi kết nối cơ sở dữ liệu MongoDB. |
+| `REDIS_URL` | bot | Chuỗi kết nối bộ nhớ đệm Redis. |
+| `JWT_SECRET` | bot + dashboard | Khoá bí mật dùng xác thực giao tiếp API giữa Dashboard & Bot. |
+| `NEXTAUTH_SECRET` | dashboard | Secret phiên đăng nhập NextAuth. |
+| `BOT_API_URL` | dashboard | Đường dẫn Server API của Bot (ví dụ: `http://localhost:4000`). |
+
+---
+
+## 🚀 Hướng Dẫn Chạy Nhanh (Quick Start)
+
+### 1. Chạy với Docker (Khuyên dùng)
 
 ```bash
-# 1. Configure env
+# 1. Tạo file cấu hình môi trường
 cp .env.example .env
-#    → fill in DISCORD_TOKEN, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET,
-#      GEMINI_API_KEY, JWT_SECRET, NEXTAUTH_SECRET (use long random strings)
+# -> Điền DISCORD_TOKEN, DISCORD_CLIENT_ID, GEMINI_API_KEY,...
 
-# 2. Start everything (MongoDB, Redis, bot, dashboard)
+# 2. Khởi chạy toàn bộ dịch vụ (MongoDB, Redis, Bot, Dashboard)
 docker compose up -d
 
-# 3. Seed demo data (optional)
-docker compose exec bot pnpm seed
-
-# 4. Register slash commands with Discord
+# 3. Đăng ký các lệnh Slash Commands với Discord
 docker compose exec bot pnpm deploy:commands
 ```
 
-- Dashboard → http://localhost:3000
-- Bot API + Swagger → http://localhost:4000/api/docs
+- **Dashboard Web:** `http://localhost:3000`
+- **Bot API & Swagger Docs:** `http://localhost:4000/api/docs`
 
-> Tip: set `DISCORD_DEV_GUILD_ID` in `.env` to register commands instantly to one server while developing (global commands can take up to ~1h to appear).
+---
 
-## 🛠️ Local development (without Docker for the apps)
+### 2. Phát triển Cục bộ (Local Development)
 
 ```bash
+# Cài đặt toàn bộ dependencies
 pnpm install
 
-# Bring up just the datastores via Docker (or point env at your own):
+# Khởi chạy MongoDB & Redis qua Docker
 docker compose up -d mongo redis
 
-# Register slash commands once:
+# Đăng ký Slash Commands
 pnpm bot:deploy-commands
 
-# Run bot + dashboard together (Turborepo):
+# Chạy đồng thời Bot + Dashboard với Turborepo
 pnpm dev
-# …or individually:
-pnpm bot:dev
-pnpm dashboard:dev
 ```
 
-The bot and dashboard both auto-load the **root `.env`**, so a single file works for the whole monorepo.
+---
 
-## 🔐 Environment variables
+### 3. Deploy lên Railway
 
-| Variable | Used by | Description |
-| --- | --- | --- |
-| `DISCORD_TOKEN` | bot | Bot token. |
-| `DISCORD_CLIENT_ID` | bot | Application (client) ID — used to register commands. |
-| `DISCORD_CLIENT_SECRET` | dashboard | OAuth2 client secret. |
-| `DISCORD_DEV_GUILD_ID` | bot | Optional: register commands to one guild instantly. |
-| `GEMINI_API_KEY` / `GEMINI_API_KEYS` | bot | One key, or a comma-separated list rotated on rate limits (429). |
-| `GEMINI_MODEL` | bot | Default model (e.g. `gemini-2.5-flash`). |
-| `GEMINI_FALLBACK_MODELS` | bot | Comma-separated models tried when the primary is throttled/unavailable. |
-| `MONGODB_URI` | bot | MongoDB connection string. |
-| `REDIS_URL` | bot | Redis connection string. |
-| `JWT_SECRET` | bot + dashboard | Shared secret; dashboard mints JWTs the bot API verifies. |
-| `ADMIN_IDS` | dashboard | Comma-separated Discord IDs allowed to edit/delete. Empty = anyone logged in. |
-| `API_PORT` | bot | Express API port (default `4000`). |
-| `MEMORY_MAX_MESSAGES` | bot | Messages kept per conversation (default `20`). |
-| `MEMORY_CACHE_TTL` | bot | Redis TTL for cached context, seconds (default `3600`). |
-| `NEXTAUTH_URL` | dashboard | Public dashboard URL. |
-| `NEXTAUTH_SECRET` | dashboard | NextAuth session secret. |
-| `BOT_API_URL` | dashboard | Server-side URL of the bot API. |
-| `NEXT_PUBLIC_APP_NAME` | dashboard | Display name. |
-
-## 📊 Dashboard
-
-1. Open http://localhost:3000 and **sign in with Discord**.
-2. View users, conversations, servers, messages and total AI tokens.
-3. Browse the servers the bot is in (with their current model/prefix/memory settings).
-
-The dashboard fetches data **server-side** from the bot API, authenticating with a short-lived JWT signed using the shared `JWT_SECRET`.
-
-## 📚 API & Swagger
-
-- Swagger UI: `GET /api/docs`
-- OpenAPI JSON: `GET /api/docs.json`
-
-| Endpoint | Auth | Description |
-| --- | --- | --- |
-| `GET /api/health` | public | Mongo/Redis/Discord status. |
-| `GET /api/stats` | Bearer JWT | Aggregate usage stats. |
-| `GET /api/guilds` | Bearer JWT | Guilds + settings. |
-| `PATCH /api/guilds/:guildId` | Bearer JWT | Update a guild's settings. |
-
-See [`docs/API.md`](docs/API.md) for details (including how to mint a test token).
-
-## 🗄️ Database
-
-Collections: `users`, `conversations`, `settings` (see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)).
+Dự án đã tích hợp sẵn `railway.json` và `Dockerfile` chuẩn hóa:
 
 ```bash
-pnpm seed   # inserts demo users, a guild settings doc and a sample conversation
+# Đăng nhập và deploy trực tiếp bằng Railway CLI
+railway login
+railway up --service humorous-creativity
 ```
 
-## 🧪 Scripts
+---
 
-```bash
-pnpm dev          # run all apps (turbo)
-pnpm build        # build all packages
-pnpm lint         # eslint across the monorepo
-pnpm typecheck    # tsc --noEmit across packages
-pnpm test         # vitest unit tests
-pnpm format       # prettier --write
-pnpm seed         # seed the database
-pnpm bot:deploy-commands  # register slash commands
-```
+## 📊 Dashboard Admin & REST API
 
-## 🤖 CI/CD
+### 1. Dashboard Web
+Truy cập `http://localhost:3000` đăng nhập thông qua Discord:
+- Giám sát lượng Token AI tiêu thụ thời gian thực.
+- Quản lý danh sách các Server, tùy chỉnh Prompt Hệ thống và AI Model từng Server.
+- Xem nhật ký các cuộc trò chuyện và danh sách thành viên.
 
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs **lint → typecheck → test → build** on every push/PR to `main`.
+### 2. Swagger API Documentation
+Truy cập `http://localhost:4000/api/docs` để xem tài liệu OpenAPI chuẩn hóa.
 
-## 🩹 Troubleshooting
-
-- **Slash commands don't show up** — run `pnpm bot:deploy-commands`; set `DISCORD_DEV_GUILD_ID` for instant registration.
-- **`/summary` returns nothing** — enable the **Message Content Intent** in the Developer Portal.
-- **Dashboard shows "Không lấy được dữ liệu từ Bot API"** — ensure the bot is running and `BOT_API_URL` + `JWT_SECRET` match.
-- **Frozen-lockfile errors in Docker** — commit a `pnpm-lock.yaml` (`pnpm install` once locally), or keep the provided `--no-frozen-lockfile`.
+---
 
 ## 📄 License
 
-MIT — see project for details.
-#   D i s c o r d - A I - A s s i s t a n t  
- 
+Dự án phát triển theo giấy phép [MIT License](LICENSE).
