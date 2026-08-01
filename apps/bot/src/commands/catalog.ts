@@ -41,7 +41,7 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
         desc: 'Thử thách Prompt Injection đánh lừa AI lấy mật mã',
       },
       {
-        usage: '/guessprompt start|guess|hint|stop',
+        usage: '/guess start|guess|hint|stop',
         desc: 'Nhìn ảnh AI vẽ và đoán từ khóa prompt gốc',
       },
       { usage: '/gacha', desc: 'Quay Gacha mở Thẻ Bài Nhân Vật AI độc bản' },
@@ -52,7 +52,7 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
       },
       { usage: '/turing status|suspect|interrogate|vote|resolve', desc: 'Dự Án Turing — Game Ma Sói AI & Tòa Án Phán Xét 24/7' },
       { usage: '/rank [user]', desc: 'Xem thẻ cấp độ (Level) và điểm XP' },
-      { usage: '/leaderboard', desc: 'Xem Bảng xếp hạng XP cao thủ server' },
+      { usage: '/top', desc: 'Xem Bảng xếp hạng XP cao thủ server' },
       { usage: '/tarot [số lá] [câu hỏi]', desc: 'Bói bài Tarot — rút bài & luận giải bằng AI' },
       { usage: '/ship <người ấy> [người 2]', desc: 'Đo độ hợp % giữa hai người' },
       {
@@ -93,7 +93,7 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
     commands: [
       { usage: '/config view|set', desc: 'Xem & chỉnh cấu hình server (cần quyền Manage Server)' },
       { usage: '/stats', desc: 'Thống kê sử dụng của bot' },
-      { usage: '/reset-memory', desc: 'Xoá bộ nhớ hội thoại của bạn trong ngữ cảnh hiện tại' },
+      { usage: '/clear', desc: 'Xoá bộ nhớ hội thoại của bạn trong ngữ cảnh hiện tại' },
     ],
   },
   {

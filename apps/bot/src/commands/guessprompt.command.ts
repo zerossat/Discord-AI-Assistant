@@ -4,7 +4,7 @@ import type { Command } from './types';
 
 export const guesspromptCommand: Command = {
   data: new SlashCommandBuilder()
-    .setName(COMMAND_NAMES.GUESSPROMPT)
+    .setName(COMMAND_NAMES.GUESS)
     .setDescription('🖼️ Game Đoán Prompt Ảnh AI — Nhìn ảnh AI tạo ra và đoán từ khóa bí mật')
     .addSubcommand((sc) =>
       sc.setName('start').setDescription('Khởi tạo hình ảnh AI mới và bắt đầu game đoán từ khóa'),

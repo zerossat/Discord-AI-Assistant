@@ -16,7 +16,7 @@ Monorepo quản lý bởi **pnpm Workspaces + Turborepo**.
 | `/code <prompt>` | Sinh mã nguồn lập trình chuẩn mực kèm giải thích chi tiết & Best Practices. |
 | `/summary [limit]` | Tóm tắt các tin nhắn gần đây trong kênh chat (10–100 tin). |
 | `/translate <to> <text> [from]` | Dịch thuật đa ngôn ngữ theo thời gian thực. |
-| `/reset-memory` | Xóa bộ nhớ ngữ cảnh trò chuyện hiện tại. |
+| `/clear` | Xóa bộ nhớ ngữ cảnh trò chuyện hiện tại. |
 
 ---
 
@@ -24,14 +24,14 @@ Monorepo quản lý bởi **pnpm Workspaces + Turborepo**.
 | Lệnh | Mô tả |
 | :--- | :--- |
 | `/hackbot start\|guess\|hint\|stop` | **Hack the Bot**: Thử thách Prompt Injection đánh lừa AI tiết lộ mật khẩu két sắt bí mật. |
-| `/guessprompt start\|guess\|hint\|stop` | **Đoán Prompt Ảnh AI**: AI tạo 1 bức ảnh ẩn, thành viên nhìn ảnh đoán từ khóa gốc. |
+| `/guess start\|guess\|hint\|stop` | **Đoán Prompt Ảnh AI**: AI tạo 1 bức ảnh ẩn, thành viên nhìn ảnh đoán từ khóa gốc. |
 | `/gacha` | **Thẻ Bài Gacha AI**: Điểm danh hằng ngày nhận thẻ bài nhân vật AI độc bản (Common, Rare, Epic, Legendary) kèm chỉ số ATK/DEF/HP. |
 | `/cards [user]` | **Kho Thẻ Bài**: Xem bộ sưu tập thẻ bài AI Gacha sở hữu. |
 | `/titles view\|claim` | **Danh Hiệu Hài Hước**: AI tự đọc thói quen nhắn tin và sắc phong danh hiệu vui nhộn độc quyền. |
 | `/turing status\|suspect\|interrogate\|vote\|resolve` | **Dự Án Turing**: Game Ma Sói AI & Tòa Án Phán Xét 24/7. |
 | `/quiz start\|hint\|answer\|skip` | **Đuổi Hình Bắt Chữ**: Trò chơi đố vui tương tác nút bấm và gợi ý thời gian thực. |
 | `/rank [user]` | **Thẻ Level**: Xem cấp độ (Level) và điểm XP. |
-| `/leaderboard` | **Bảng Xếp Hạng**: Xem Top 10 cao thủ server. |
+| `/top` | **Bảng Xếp Hạng**: Xem Top 10 cao thủ server. |
 | `/tarot [số lá] [câu hỏi]` | **Bói Bài Tarot**: Rút 1 hoặc 3 lá bài Tarot và nhờ AI giải đoán thông điệp. |
 | `/ship <người 1> [người 2]` | **Bói Hợp Đôi**: Đo độ hợp % giữa hai người chơi kèm nhận xét hài hước. |
 

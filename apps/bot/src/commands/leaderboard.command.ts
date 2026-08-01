@@ -4,8 +4,8 @@ import type { Command } from './types';
 
 export const leaderboardCommand: Command = {
   data: new SlashCommandBuilder()
-    .setName(COMMAND_NAMES.LEADERBOARD)
-    .setDescription('Xem Bảng xếp hạng XP cao thủ — View XP leaderboard'),
+    .setName(COMMAND_NAMES.TOP)
+    .setDescription('Xem Bảng xếp hạng XP cao thủ Server'),
   async execute(interaction, services) {
     if (!interaction.deferred && !interaction.replied) {
       await interaction.deferReply();
