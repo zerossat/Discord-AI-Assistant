@@ -58,6 +58,7 @@ export const COMMAND_NAMES = {
   CARDS: 'cards',
   TITLES: 'titles',
   TURING: 'turing',
+  GUIDE: 'guide',
 } as const;
 
 export type CommandName = (typeof COMMAND_NAMES)[keyof typeof COMMAND_NAMES];

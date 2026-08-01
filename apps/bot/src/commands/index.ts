@@ -27,6 +27,7 @@ import { guesspromptCommand } from './guessprompt.command';
 import { gachaCommand, cardsCommand } from './gacha.command';
 import { titlesCommand } from './titles.command';
 import { turingCommand } from './turing.command';
+import { guideCommand } from './guide.command';
 
 /** Ordered list of all slash commands the bot exposes. */
 export const commands: Command[] = [
@@ -49,6 +50,7 @@ export const commands: Command[] = [
   cardsCommand,
   titlesCommand,
   turingCommand,
+  guideCommand,
   ttsCommand,
   leaveCommand,
   helpCommand,

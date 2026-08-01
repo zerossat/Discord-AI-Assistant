@@ -98,11 +98,12 @@ export const COMMAND_CATEGORIES: CommandCategory[] = [
   },
   {
     id: 'help',
-    label: 'Trợ giúp',
+    label: 'Trợ giúp & Hướng dẫn',
     emoji: '❓',
     commands: [
       { usage: '/help', desc: 'Xem danh sách toàn bộ lệnh' },
       { usage: '/menu', desc: 'Menu lệnh tương tác (chọn nhóm để xem)' },
+      { usage: '/guide [game]', desc: 'Trung tâm hướng dẫn luật chơi chi tiết các Trò chơi AI' },
     ],
   },
 ];

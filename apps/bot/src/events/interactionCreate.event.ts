@@ -3,6 +3,7 @@ import { SUPPORTED_AI_MODELS } from '@daa/shared';
 import { commandMap } from '../commands';
 import { handleMenuSelect } from '../commands/catalog';
 import { handleQuizInteraction } from '../commands/quiz.command';
+import { handleGuideSelect } from '../commands/guide.command';
 import type { ServiceContainer } from '../services';
 import { childLogger } from '../utils/logger';
 
@@ -29,12 +30,16 @@ export function registerInteractionCreate(client: Client, services: ServiceConta
       return;
     }
 
-    // Interactive `/menu` category dropdown.
+    // Interactive `/menu` & `/guide` category dropdowns.
     if (interaction.isStringSelectMenu()) {
       try {
-        await handleMenuSelect(interaction);
+        if (interaction.customId === 'guide:select_game') {
+          await handleGuideSelect(interaction);
+        } else {
+          await handleMenuSelect(interaction);
+        }
       } catch (err) {
-        log.error({ err }, 'menu select failed');
+        log.error({ err }, 'select menu handling failed');
       }
       return;
     }
