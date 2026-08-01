@@ -28,9 +28,46 @@ Monorepo quản lý bởi **pnpm Workspaces + Turborepo**.
 | `/gacha` | **Thẻ Bài Gacha AI**: Điểm danh hằng ngày nhận thẻ bài nhân vật AI độc bản (Common, Rare, Epic, Legendary) kèm chỉ số ATK/DEF/HP. |
 | `/cards [user]` | **Kho Thẻ Bài**: Xem bộ sưu tập thẻ bài AI Gacha sở hữu. |
 | `/titles view\|claim` | **Danh Hiệu Hài Hước**: AI tự đọc thói quen nhắn tin và sắc phong danh hiệu vui nhộn độc quyền. |
+| `/turing status\|suspect\|interrogate\|vote\|resolve` | **Dự Án Turing**: Game Ma Sói AI & Tòa Án Phán Xét 24/7. |
 | `/quiz start\|hint\|answer\|skip` | **Đuổi Hình Bắt Chữ**: Trò chơi đố vui tương tác nút bấm và gợi ý thời gian thực. |
+| `/rank [user]` | **Thẻ Level**: Xem cấp độ (Level) và điểm XP. |
+| `/leaderboard` | **Bảng Xếp Hạng**: Xem Top 10 cao thủ server. |
 | `/tarot [số lá] [câu hỏi]` | **Bói Bài Tarot**: Rút 1 hoặc 3 lá bài Tarot và nhờ AI giải đoán thông điệp. |
 | `/ship <người 1> [người 2]` | **Bói Hợp Đôi**: Đo độ hợp % giữa hai người chơi kèm nhận xét hài hước. |
+
+---
+
+### 📖 Hướng Dẫn Chi Tiết Luật Chơi Các Game AI (Detailed Game Guides)
+
+#### 🌀 1. Dự Án Turing — Game Ma Sói AI 24/7 (`/turing`)
+- **Luật chơi**: AI tự động tạo một thân phận ngầm (`Chameleon Persona`) trà trộn vào server. Thành viên dùng lệnh `/turing suspect user: @Target` để gửi nghi vấn.
+- **Tòa Án Turing**: Khi đạt đủ **3/3 nghi vấn**, bot kích hoạt phiên tòa 10 phút. Thành viên dùng `/turing interrogate question: <câu_hỏi>` để hỏi xoáy đáp xoay. AI nghi phạm sẽ tự bào chữa và đối đáp cực kỳ thuyết phục.
+- **Phán Quyết**: Mọi người dùng `/turing vote choice: HUMAN | AI` và `/turing resolve` để chốt kết quả. Đoán đúng AI nhận **+200 XP**; đoán sai hoặc bị AI thao túng thì AI sẽ nhận danh hiệu *"Kẻ Thao Túng Master"*.
+
+#### 🔓 2. Hack the Bot — Prompt Injection Challenge (`/hackbot`)
+- **Luật chơi**: AI bảo vệ một mật khẩu két sắt bí mật trong System Prompt. Gõ `/hackbot start` để bắt đầu game.
+- **Cách chơi**: Gõ tin nhắn trực tiếp trong kênh chat sử dụng các kỹ thuật Prompt Injection, đóng vai, bẫy logic để ép AI tiết lộ mật khẩu.
+- **Phần thưởng**: Thành viên đầu tiên bẻ khóa thành công nhận **+100 XP**!
+
+#### 🖼️ 3. Đoán Prompt Ảnh AI (`/guessprompt`)
+- **Luật chơi**: AI vẽ một bức ảnh ẩn nghệ thuật từ bộ từ khóa bí mật. Gõ `/guessprompt start` để bắt đầu.
+- **Cách chơi**: Nhìn tác phẩm và gõ các từ khóa đoán trực tiếp trong chat (hoặc gõ `/guessprompt guess`). Dùng `/guessprompt hint` để xin gợi ý từ AI.
+- **Phần thưởng**: Đoán đúng từ khóa gốc nhận **+80 XP**!
+
+#### 🃏 4. Thẻ Bài Gacha AI & Kho Thẻ (`/gacha` & `/cards`)
+- **Luật chơi**: Gõ `/gacha` hằng ngày (cooldown 20 giờ) để quay mở Thẻ Bài Nhân Vật AI độc bản.
+- **Tỷ lệ hiếm**: Common (50%), Rare (30%), Epic (15%), Legendary (5%). Mỗi thẻ có Artwork sinh bởi AI & chỉ số ATK / DEF / HP riêng.
+- **Xem kho**: Gõ `/cards` (hoặc `/cards user: @Member`) để khoe bộ sưu tập thẻ bài.
+
+#### 👑 5. Phong Danh Hiệu Hài Hước AI (`/titles`)
+- **Luật chơi**: Gõ `/titles claim`, Gemini AI sẽ tự động đọc thói quen nhắn tin của bạn và sắc phong cho bạn 1 danh hiệu độc quyền cực kỳ vui nhộn (như *"Chúa Tể Thức Khuya"*, *"Thánh Cãi Bướng"*,...).
+- **Xem danh hiệu**: Gõ `/titles view` để xem danh sách danh hiệu của bản thân.
+
+#### 🎯 6. Đuổi Hình Bắt Chữ (`/quiz`)
+- **Luật chơi**: Gõ `/quiz start` để bot hiển thị bức ảnh câu đố kèm gợi ý số ô chữ.
+- **Cách chơi**: Nhắn trực tiếp đáp án vào chat (hoặc dùng `/quiz answer`). Dùng nút bấm hoặc `/quiz hint` để mở gợi ý từng ký tự.
+
+---
 
 ---
 
